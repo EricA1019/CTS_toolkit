@@ -9,6 +9,10 @@ extends Node
 ##   var entity = CTS_Entity.get_entity("detective")
 ##   CTS_Entity.despawn_all_by_type("bandit")
 
+const EntityBase = preload("res://addons/cts_entity/Core/entity_base.gd")
+const EntityFactory = preload("res://addons/cts_entity/Core/entity_factory.gd")
+const EntityConfig = preload("res://addons/cts_entity/Data/entity_config.gd")
+
 # =============================================================================
 # SIGNALS
 # =============================================================================
@@ -225,5 +229,3 @@ func _get_entity_type(entity: EntityBase) -> String:
 ## Signal handler: auto-register entities spawned by factory
 func _on_entity_spawned(entity_id: String, entity_node: EntityBase, config: EntityConfig) -> void:
 	register_entity(entity_id, entity_node)
-func _ready() -> void:
-    pass

@@ -16,6 +16,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+CTS_Core="*res://addons/cts_core/Core/core_manager.gd"
+CTS_Entity="*res://addons/cts_entity/Core/entity_manager.gd"
 AppConfig="*res://addons/maaacks_game_template/base/nodes/autoloads/app_config/app_config.tscn"
 SceneLoader="*res://addons/maaacks_game_template/base/nodes/autoloads/scene_loader/scene_loader.tscn"
 ProjectMusicController="*res://addons/maaacks_game_template/base/nodes/autoloads/music_controller/project_music_controller.tscn"
@@ -23,7 +25,7 @@ ProjectUISoundController="*res://addons/maaacks_game_template/base/nodes/autoloa
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gloot/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/maaacks_game_template/plugin.cfg")
+enabled=PackedStringArray("res://addons/cts_core/plugin.cfg", "res://addons/cts_entity/plugin.cfg", "res://addons/gloot/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/maaacks_game_template/plugin.cfg")
 
 [internationalization]
 
