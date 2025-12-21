@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://dony820nmjpce"]
+
+[ext_resource type="Script" uid="uid://d3v5a3voeys27" path="res://src/entities/entity/base_entity/scripts/detective.gd" id="1_7xo2e"]
+[ext_resource type="Resource" path="res://src/entities/entity/base_entity/data/detective.tres" id="2_fy5t3"]
+[ext_resource type="Script" uid="uid://bo744wpycscqd" path="res://addons/vision_cone_2d/vision_cone_2d.gd" id="3_pqj1v"]
+[ext_resource type="SpriteFrames" uid="uid://c6d4ll777rbd5" path="res://src/entities/entity/base_entity/data/detective_sprite.tres" id="4_xbf0k"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_fw8pn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_detective_collision"]
+size = Vector2(8, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a8p36"]
+
+[node name="Detective" type="CharacterBody2D"]
+script = ExtResource("1_7xo2e")
+entity_data = ExtResource("2_fy5t3")
+
+[node name="VisionCone2D2" type="Node2D" parent="."]
+script = ExtResource("3_pqj1v")
+metadata/_custom_type_script = "uid://bo744wpycscqd"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = ExtResource("4_xbf0k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 1)
+shape = SubResource("RectangleShape2D_detective_collision")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="DetectionCollision" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("RectangleShape2D_a8p36")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+
+[node name="InteractionCollision" type="CollisionShape2D" parent="InteractionArea"]
+
+[node name="VisionCone2D" type="Node2D" parent="."]
+position = Vector2(1, 0)
+script = ExtResource("3_pqj1v")
+metadata/_custom_type_script = "uid://bo744wpycscqd"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+physics_interpolation_mode = 1
+
+[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("5_fw8pn")

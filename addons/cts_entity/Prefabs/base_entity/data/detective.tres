@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EntitiesResource" load_steps=4 format=3]
+
+[ext_resource type="Script" uid="uid://c0wxojs3hvo2" path="res://src/entities/resources/entities_resource.gd" id="1_script"]
+[ext_resource type="Resource" path="res://src/entities/entity/base_entity/data/detective_stats.tres" id="2_stats"]
+[ext_resource type="Resource" path="res://src/entities/entity/base_entity/data/detective_abilities.tres" id="3_abilities"]
+
+[resource]
+script = ExtResource("1_script")
+entity_id = "detective"
+entity_name = "The Detective"
+description = "A mundane investigator thrust into cosmic investigation after The Sundering. Granted functional immortality by Lucy to solve the ultimate crime: deicide."
+base_stats = ExtResource("2_stats")
+ability_blocks = [ExtResource("3_abilities")]
+traits = []
+traits_block = null
+inventory = null
+faction = "human"
+is_hostile = false
+is_companion = false
+dialogue_tree_id = ""

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AbilitiesResource" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://cc0jquh1w7pws" path="res://src/entities/resources/abilities_resource.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+ability_id = "examine"
+ability_name = "Examine"
+description = "Carefully examine an object or clue to reveal hidden details."
+icon = null
+stamina_cost = 0
+hp_cost = 0
+pm_cost = 0
+cooldown_turns = 0
+target_type = "single"
+weapon_range = 1
+damage_amount = 0
+damage_type = "physical"
+healing_amount = 0
+buff_duration = 0
+effects = {
+"primary": "Reveals detailed information about target",
+"secondary": "May unlock additional clues",
+"special": "Investigation skill affects quality of information"
+}
+required_skill = "investigation_perception"
+required_skill_level = 0

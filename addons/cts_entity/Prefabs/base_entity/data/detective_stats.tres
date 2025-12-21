@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="StatBlockResource" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://7d2cso0d4prr" path="res://src/entities/resources/stat_block.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+stat_name = "detective_stats"
+sanity = 100
+instinct = 0
+stamina = 2
+initiative_bonus = 2
+armor_class = 10
+skills = {
+"acrobatics": 5,
+"athletics": 10,
+"combat_firearms": 20,
+"combat_melee": 10,
+"combat_survival": 15,
+"combat_tactics": 10,
+"crafting_alchemy": 5,
+"crafting_engineering": 10,
+"crafting_occultism": 5,
+"crafting_scavenging": 15,
+"investigation_deduction": 30,
+"investigation_forensics": 25,
+"investigation_interrogation": 20,
+"investigation_perception": 25,
+"social_charisma": 15,
+"social_empathy": 20,
+"social_intimidation": 10,
+"social_leadership": 10,
+"stealth": 15
+}
+hp = 100
+max_hp = 100
+strength = 12
+dexterity = 14
+constitution = 12
+intelligence = 16
+wisdom = 14
+charisma = 12
+speed = 200.0
+level = 1

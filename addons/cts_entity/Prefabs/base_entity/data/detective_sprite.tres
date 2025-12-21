@@ -1,0 +1,55 @@
+[gd_resource type="SpriteFrames" load_steps=6 format=3 uid="uid://c6d4ll777rbd5"]
+
+[ext_resource type="Texture2D" uid="uid://c84bukn3t7ypb" path="res://src/entities/entity/base_entity/assets/detective_sheet.png" id="1_gjr4y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ax3m"]
+atlas = ExtResource("1_gjr4y")
+region = Rect2(1, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mubn7"]
+atlas = ExtResource("1_gjr4y")
+region = Rect2(27, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_04axk"]
+atlas = ExtResource("1_gjr4y")
+region = Rect2(14, 0, 13, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ijx3y"]
+atlas = ExtResource("1_gjr4y")
+region = Rect2(40, 0, 13, 13)
+
+[resource]
+resource_name = "detective"
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0ax3m")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mubn7")
+}],
+"loop": true,
+"name": &"potion",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_04axk")
+}],
+"loop": true,
+"name": &"shooting",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ijx3y")
+}],
+"loop": true,
+"name": &"tool",
+"speed": 5.0
+}]

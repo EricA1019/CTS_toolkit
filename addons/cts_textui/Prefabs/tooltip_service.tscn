@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bk7md3vqx8p5f"]
+
+[ext_resource type="Script" path="res://addons/cts_textui/Core/tooltip_service.gd" id="1"]
+
+[node name="TooltipService" type="Node" node_paths=PackedStringArray("tooltips_parent")]
+script = ExtResource("1")
+tooltips_parent = NodePath("TooltipsParent")
+
+[node name="TooltipsParent" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
