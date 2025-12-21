@@ -200,5 +200,3 @@ func _generate_instance_id(config: EntityConfig) -> String:
 	
 	_id_counters[base_id] += 1
 	return "%s_%03d" % [base_id, _id_counters[base_id]]
-func _ready() -> void:
-    pass
