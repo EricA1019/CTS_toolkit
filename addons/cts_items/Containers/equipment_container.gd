@@ -1,0 +1,67 @@
+extends Node
+class_name EquipmentContainer
+
+const EquipmentBlock = preload("res://addons/cts_items/Data/equipment_block.gd")
+const ItemEnums = preload("res://addons/cts_items/Data/item_enums.gd")
+const ItemInstance = preload("res://addons/cts_items/Data/item_instance.gd")
+
+@export var equipment_block: EquipmentBlock
+
+var _equipped: Dictionary = {}
+
+func _ready() -> void:
+    _load_block()
+
+func equip_item(slot: int, item: ItemInstance) -> bool:
+    if item == null:
+        return false
+    if not _slot_allowed(slot):
+        return false
+    var previous := _equipped.get(slot, null)
+    _equipped[slot] = item
+    _emit_item_equipped(slot, item, previous)
+    return true
+
+func unequip_item(slot: int) -> ItemInstance:
+    if not _equipped.has(slot):
+        return null
+    var item: ItemInstance = _equipped[slot]
+    _equipped.erase(slot)
+    _emit_item_unequipped(slot, item)
+    return item
+
+func get_equipped() -> Dictionary:
+    return _equipped.duplicate()
+
+func _slot_allowed(slot: int) -> bool:
+    if equipment_block and equipment_block.available_slots.size() > 0:
+        return slot in equipment_block.available_slots
+    return true
+
+func _load_block() -> void:
+    _equipped.clear()
+    if equipment_block == null:
+        return
+    for slot in equipment_block.starting_equipment.keys():
+        var item: ItemInstance = equipment_block.starting_equipment[slot]
+        if item:
+            _equipped[int(slot)] = item
+
+func _emit_item_equipped(slot: int, item: ItemInstance, previous: ItemInstance) -> void:
+    var bus := _signal_bus()
+    if bus:
+        bus.emit_signal("item_equipped", _resolve_entity_id(), slot, item, previous)
+
+func _emit_item_unequipped(slot: int, item: ItemInstance) -> void:
+    var bus := _signal_bus()
+    if bus:
+        bus.emit_signal("item_unequipped", _resolve_entity_id(), slot, item)
+
+func _signal_bus() -> Node:
+    return Engine.get_singleton("CTS_Items") if Engine.has_singleton("CTS_Items") else null
+
+func _resolve_entity_id() -> String:
+    var parent := get_parent()
+    if parent and parent.has_method("get_entity_id"):
+        return parent.get_entity_id()
+    return name

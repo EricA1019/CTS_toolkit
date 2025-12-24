@@ -1,25 +1,11 @@
 @tool
 extends EditorPlugin
 
-const AUTOLOAD_NAME := "CTS_Items"
-const AUTOLOAD_PATH := "res://addons/cts_items/Core/items_manager.gd"
-const REQUIRED_DEPENDENCIES := ["CTS_Core"]
+const CRAFTING_AUTOLOAD := "CTS_Crafting"
+const CRAFTING_PATH := "res://addons/cts_items/Core/crafting_manager.gd"
 
-func _enable_plugin() -> void:
-    if not _validate_dependencies():
-        push_error("%s requires dependencies: %s" % [AUTOLOAD_NAME, REQUIRED_DEPENDENCIES])
-        assert(false, "Missing dependencies")
-        return
-    if not Engine.has_singleton(AUTOLOAD_NAME):
-        add_autoload_singleton(AUTOLOAD_NAME, AUTOLOAD_PATH)
+func _enter_tree() -> void:
+	add_autoload_singleton(CRAFTING_AUTOLOAD, CRAFTING_PATH)
 
-func _disable_plugin() -> void:
-    if Engine.has_singleton(AUTOLOAD_NAME):
-        remove_autoload_singleton(AUTOLOAD_NAME)
-
-func _validate_dependencies() -> bool:
-    for dep in REQUIRED_DEPENDENCIES:
-        if not Engine.has_singleton(dep):
-            printerr("%s requires %s to be enabled" % [AUTOLOAD_NAME, dep])
-            return false
-    return true
+func _exit_tree() -> void:
+	remove_autoload_singleton(CRAFTING_AUTOLOAD)
