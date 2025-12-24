@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="StatPageConfig" load_steps=2 format=3 uid="uid://test_stats_config"]
+
+[ext_resource type="Script" path="res://addons/cts_ui/PlayerBook/resources/stat_page_config.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+title = "Attributes"
+icon = null
+component_name = "Stats"
+stats_to_show = Array[String](["Health", "Mana", "Strength", "Dexterity"])

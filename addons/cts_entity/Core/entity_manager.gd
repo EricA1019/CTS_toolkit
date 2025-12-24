@@ -12,22 +12,14 @@ extends Node
 const EntityBase = preload("res://addons/cts_entity/Core/entity_base.gd")
 const EntityFactory = preload("res://addons/cts_entity/Core/entity_factory.gd")
 const EntityConfig = preload("res://addons/cts_entity/Data/entity_config.gd")
+@onready var _signals: Node = EntitySignalRegistry
 
 # =============================================================================
-# SIGNALS
+# SIGNAL REGISTRY
 # =============================================================================
 
-## Emitted when entity added to registry
-signal entity_registered(entity_id: String, entity: EntityBase)
-
-## Emitted when entity removed from registry
-signal entity_unregistered(entity_id: String)
-
-## Emitted when batch despawn operation begins
-signal batch_despawn_started(entity_type: String, count: int)
-
-## Emitted when all entities in batch despawned
-signal batch_despawn_complete(entity_type: String, count: int)
+## All entity signals centralized in EntitySignalRegistry
+## Access via: EntitySignalRegistry.entity_registered.emit(...)
 
 # =============================================================================
 # STATE
@@ -53,7 +45,8 @@ func _ready() -> void:
 	add_child(_factory)
 	
 	# Connect to factory signals
-	_factory.entity_spawned.connect(_on_entity_spawned)
+	if _signals:
+		_signals.connect("entity_spawned", _on_entity_spawned)
 	
 	print("[EntityManager] Initialized (autoload: CTS_Entity)")
 
@@ -75,14 +68,15 @@ func register_entity(entity_id: String, entity: EntityBase) -> void:
 		_entities_by_type[entity_type] = []
 	_entities_by_type[entity_type].append(entity_id)
 	
-	entity_registered.emit(entity_id, entity)
+	if _signals:
+		_signals.emit_signal("entity_registered", entity_id, entity)
 
 ## Unregister entity from central registry
 func unregister_entity(entity_id: String) -> void:
 	if not _entity_registry.has(entity_id):
 		return
 	
-	var entity := _entity_registry[entity_id]
+	var entity: EntityBase = _entity_registry[entity_id]
 	var entity_type := _get_entity_type(entity)
 	
 	_entity_registry.erase(entity_id)
@@ -95,7 +89,8 @@ func unregister_entity(entity_id: String) -> void:
 		if _entities_by_type[entity_type].is_empty():
 			_entities_by_type.erase(entity_type)
 	
-	entity_unregistered.emit(entity_id)
+	if _signals:
+		_signals.emit_signal("entity_unregistered", entity_id)
 
 # =============================================================================
 # LOOKUP METHODS
@@ -120,7 +115,7 @@ func get_entities_by_type(entity_type: String) -> Array[EntityBase]:
 		return entities
 	
 	for entity_id in _entities_by_type[entity_type]:
-		var entity := get_entity(entity_id)
+		var entity: EntityBase = get_entity(entity_id)
 		if entity:
 			entities.append(entity)
 	
@@ -160,12 +155,14 @@ func despawn_all_by_type(entity_type: String, reason: String = "batch_cleanup") 
 	if entities.is_empty():
 		return
 	
-	batch_despawn_started.emit(entity_type, entities.size())
+	if _signals:
+		_signals.emit_signal("batch_despawn_started", entity_type, entities.size())
 	
-	# Stagger despawns to prevent lag spike
+	# Stagger despawns to prevent lag spike and await cleanup completion
 	await _staggered_despawn(entities, reason)
-	
-	batch_despawn_complete.emit(entity_type, entities.size())
+
+	if _signals:
+		_signals.emit_signal("batch_despawn_complete", entity_type, entities.size())
 
 ## Despawn all entities (cleanup)
 func despawn_all_entities(reason: String = "cleanup") -> void:
@@ -213,7 +210,9 @@ func _staggered_despawn(entities: Array[EntityBase], reason: String) -> void:
 		if not is_instance_valid(entity):
 			continue
 		
+		var exited := entity.tree_exited
 		entity.despawn(reason)
+		await exited
 		count += 1
 		
 		# Wait for next frame every N entities

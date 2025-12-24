@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EntityConfig" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://addons/cts_entity/Data/entity_config.gd" id="1_x8vhg"]
+[ext_resource type="Resource" path="res://showcase/showcase_entity_resource.tres" id="2_showcase"]
+[ext_resource type="Resource" path="res://showcase/showcase_skills.tres" id="3_skills"]
+[ext_resource type="Resource" path="res://showcase/showcase_affixes.tres" id="4_affixes"]
+
+[resource]
+script = ExtResource("1_x8vhg")
+entity_id = "showcase_entity"
+entity_name = "Showcase Entity"
+is_unique = false
+description = "Demonstration entity for CTS Toolbox component integration.
+Used to showcase Skills, Affixes, Abilities, and other CTS systems."
+tile_size = 32
+prefab_scene = null
+visual_data = ExtResource("2_showcase")
+skills_block = ExtResource("3_skills")
+affix_block = ExtResource("4_affixes")
+custom_data = {}

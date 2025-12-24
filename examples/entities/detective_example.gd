@@ -23,4 +23,4 @@ func _ready() -> void:
 	else:
 		push_error("[Example] Failed to spawn detective")
 
-const EntityConfig = preload("res://addons/cts_entity/Data/entity_config.gd")
+# EntityConfig is a global class from cts_entity plugin

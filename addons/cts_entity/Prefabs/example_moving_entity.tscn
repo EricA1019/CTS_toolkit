@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4n7x8kak2m1"]
+
+[ext_resource type="Script" uid="uid://y7mydi60uet7" path="res://addons/cts_entity/Core/entity_base.gd" id="1_base"]
+[ext_resource type="Script" uid="uid://dl2j57b0xkopm" path="res://addons/cts_entity/Components/simple_movement_component.gd" id="2_move"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1"]
+size = Vector2(32, 32)
+
+[node name="MovingEntity" type="Node2D"]
+script = ExtResource("1_base")
+
+[node name="StatsContainer" type="Node" parent="."]
+
+[node name="InventoryContainer" type="Node" parent="."]
+
+[node name="AbilitiesContainer" type="Node" parent="."]
+
+[node name="ComponentsContainer" type="Node" parent="."]
+
+[node name="SimpleMovementComponent" type="Node" parent="ComponentsContainer"]
+script = ExtResource("2_move")
+speed = 150.0
+bounce_distance = 200.0
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals"]
+modulate = Color(0.8, 0.3, 0.3, 1)
+texture = SubResource("PlaceholderTexture2D_1")
+
+[node name="Label" type="Label" parent="Visuals"]
+offset_left = -20.0
+offset_top = -30.0
+offset_right = 20.0
+offset_bottom = -15.0
+text = "Mover"
+horizontal_alignment = 1

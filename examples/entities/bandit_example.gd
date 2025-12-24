@@ -34,4 +34,4 @@ func _ready() -> void:
 	CTS_Entity.despawn_all_by_type("bandit", "example_cleanup")
 	print("[Example] Batch despawn initiated (staggered: 3 entities per frame)")
 
-const EntityConfig = preload("res://addons/cts_entity/Data/entity_config.gd")
+# EntityConfig is a global class from cts_entity plugin

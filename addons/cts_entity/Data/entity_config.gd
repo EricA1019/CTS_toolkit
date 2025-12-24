@@ -35,6 +35,19 @@ class_name EntityConfig
 ## If null, factory uses base entity_base.tscn template
 @export var prefab_scene: PackedScene = null
 
+## Visual, physics, and movement data
+## Applied by factory when creating entity
+@export var visual_data: EntityResource = null
+
+## Optional block references for typed containers
+@export var skills_block: Resource = null
+@export var affix_block: Resource = null
+@export var inventory_block: Resource = null
+@export var equipment_block: Resource = null
+@export var stats_block: Resource = null
+@export var abilities_block: Resource = null
+@export var recipe_book: Resource = null
+
 ## Extension data for other plugins
 ## Example: {"stats_path": "res://...", "abilities_path": "res://..."}
 @export var custom_data: Dictionary = {}

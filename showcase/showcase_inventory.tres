@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="InventoryBlock" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/cts_items/Data/inventory_block.gd" id="1_inv"]
+
+[resource]
+script = ExtResource("1_inv")
+capacity = 8
+weight_limit = 0.0
+starting_items = []

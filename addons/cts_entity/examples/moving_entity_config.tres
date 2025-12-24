@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EntityConfig" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/cts_entity/Data/entity_config.gd" id="1_config"]
+[ext_resource type="PackedScene" path="res://addons/cts_entity/Prefabs/example_moving_entity.tscn" id="2_prefab"]
+
+[resource]
+script = ExtResource("1_config")
+entity_id = "moving_target"
+entity_name = "Moving Target"
+is_unique = false
+prefab_scene = ExtResource("2_prefab")
+description = "An entity that moves back and forth using a prefab with SimpleMovementComponent"
+tile_size = 16
+custom_data = {}

@@ -12,24 +12,14 @@ class_name EntityBase
 ##   # Scene-instanced (fallback):
 ##   var entity = preload("res://my_entity.tscn").instantiate()
 
+@onready var _signals: Node = EntitySignalRegistry
+
 # =============================================================================
-# SIGNALS
+# SIGNAL REGISTRY
 # =============================================================================
 
-## Emitted after entity fully initialized in scene tree
-signal entity_ready(entity_id: String)
-
-## Emitted after entity_config processed
-signal entity_config_loaded(entity_id: String, config: EntityConfig)
-
-## Emitted for each container after validation
-signal container_ready(entity_id: String, container_name: String)
-
-## Emitted before entity cleanup begins (death, removal, etc.)
-signal entity_despawning(entity_id: String, reason: String)
-
-## Emitted after despawn delay, before queue_free
-signal entity_cleanup_started(entity_id: String)
+## All entity signals centralized in EntitySignalRegistry
+## This class emits lifecycle signals via the registry
 
 # =============================================================================
 # EXPORTS
@@ -44,9 +34,15 @@ signal entity_cleanup_started(entity_id: String)
 
 ## Unique instance identifier (set by factory or generated)
 var _instance_id: String = ""
+var entity_id: String:
+	get:
+		return get_entity_id()
 
 ## Despawn state guard
 var _is_despawning: bool = false
+
+## Cleanup guard to avoid double unregister
+var _did_cleanup: bool = false
 
 # =============================================================================
 # CONTAINER REFERENCES
@@ -63,6 +59,12 @@ var _is_despawning: bool = false
 
 ## Container for misc components (AI, movement, etc.)
 @onready var components_container: Node = $ComponentsContainer
+
+## Optional typed containers (added if present in scene)
+@onready var skills_container: Node = get_node_or_null("SkillsContainer")
+@onready var affix_container: Node = get_node_or_null("AffixContainer")
+@onready var equipment_container: Node = get_node_or_null("EquipmentContainer")
+@onready var crafting_container: Node = get_node_or_null("CraftingContainer")
 
 # =============================================================================
 # LIFECYCLE
@@ -90,12 +92,14 @@ func _initialize() -> void:
 	# Load config if provided
 	if entity_config:
 		if entity_config._validate():
-			entity_config_loaded.emit(_instance_id, entity_config)
+			if _signals:
+				_signals.emit_signal("entity_config_loaded", _instance_id, entity_config)
 		else:
 			push_error("[EntityBase] EntityConfig validation failed for %s" % _instance_id)
 	
 	# Entity ready for plugins to use
-	entity_ready.emit(_instance_id)
+	if _signals:
+		_signals.emit_signal("entity_ready", _instance_id)
 
 ## Emit container ready signals
 func _emit_container_signals() -> void:
@@ -107,8 +111,8 @@ func _emit_container_signals() -> void:
 	]
 	
 	for container in containers:
-		if container:
-			container_ready.emit(_instance_id, container.name)
+		if container and _signals:
+			_signals.emit_signal("container_ready", _instance_id, container.name)
 
 # =============================================================================
 # DESPAWN & CLEANUP
@@ -123,7 +127,8 @@ func despawn(reason: String = "manual") -> void:
 	_is_despawning = true
 	
 	# Emit despawn signal (plugins can respond: loot drops, death VFX, etc.)
-	entity_despawning.emit(_instance_id, reason)
+	if _signals:
+		_signals.emit_signal("entity_despawning", _instance_id, reason)
 	
 	# Handle death sprite replacement if applicable
 	if reason == "death":
@@ -145,21 +150,26 @@ func _handle_death_sprite() -> void:
 
 ## Internal cleanup before queue_free
 func _cleanup() -> void:
-	entity_cleanup_started.emit(_instance_id)
-	
+	if _did_cleanup:
+		return
+	_did_cleanup = true
+
+	if _signals:
+		_signals.emit_signal("entity_cleanup_started", _instance_id)
+
 	# Notify EntityManager to unregister
 	var manager := get_node_or_null("/root/CTS_Entity")
 	if manager and manager.has_method("unregister_entity"):
 		manager.unregister_entity(_instance_id)
-	
+
 	# Plugins disconnect signals, cleanup components
 
 # =============================================================================
 # PUBLIC API
 # =============================================================================
 
-## Get unique instance identifier
-func get_instance_id() -> String:
+## Get unique instance identifier (string)
+func get_entity_id() -> String:
 	return _instance_id
 
 ## Get container by name
@@ -173,6 +183,14 @@ func get_container(container_name: String) -> Node:
 			return abilities_container
 		"ComponentsContainer":
 			return components_container
+		"SkillsContainer":
+			return skills_container
+		"AffixContainer":
+			return affix_container
+		"EquipmentContainer":
+			return equipment_container
+		"CraftingContainer":
+			return crafting_container
 		_:
 			push_error("[EntityBase] Unknown container: %s" % container_name)
 			return null
@@ -187,8 +205,27 @@ func get_all_containers() -> Dictionary:
 		"StatsContainer": stats_container,
 		"InventoryContainer": inventory_container,
 		"AbilitiesContainer": abilities_container,
-		"ComponentsContainer": components_container
+		"ComponentsContainer": components_container,
+		"SkillsContainer": skills_container,
+		"AffixContainer": affix_container,
+		"EquipmentContainer": equipment_container,
+		"CraftingContainer": crafting_container,
 	}
+
+func get_skills_container() -> Node:
+	return skills_container
+
+func get_affix_container() -> Node:
+	return affix_container
+
+func get_inventory_container_typed() -> Node:
+	return inventory_container
+
+func get_equipment_container() -> Node:
+	return equipment_container
+
+func get_crafting_container() -> Node:
+	return crafting_container
 
 # =============================================================================
 # INTERNAL HELPERS
@@ -196,6 +233,14 @@ func get_all_containers() -> Dictionary:
 
 ## Generate fallback ID for scene-instanced entities
 func _generate_fallback_id() -> String:
+	# Use Object.get_instance_id(self) to avoid recursion into our get_instance_id()
+	var unique_id := str(get_instance_id())
 	if entity_config and not entity_config.entity_id.is_empty():
-		return "%s_scene_%d" % [entity_config.entity_id, get_instance_id()]
-	return "entity_%d" % get_instance_id()
+		return "%s_scene_%s" % [entity_config.entity_id, unique_id]
+	return "entity_%s" % unique_id
+
+func _exit_tree() -> void:
+	# If the node is removed without calling despawn(), ensure cleanup happens
+	if _did_cleanup:
+		return
+	_cleanup()

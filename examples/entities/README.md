@@ -29,6 +29,23 @@ Demonstrates **procedural entity** creation:
 4. Run scene - 5 bandits spawn with IDs bandit_001 through bandit_005
 5. After 3 seconds, all bandits despawn in staggered batches
 
+### showcase_example.gd
+Demonstrates **multi-plugin integration** (cts_entity + cts_skills):
+- Unique showcase entity with skills system
+- SkillsComponent attachment and configuration
+- Skill XP gain and leveling mechanics
+- Interactive keyboard controls (press 1-4 for skill XP, Space for status)
+- Signal-based feedback (level ups, XP gains)
+
+**Usage**:
+1. Enable cts_core, cts_entity, and cts_skills plugins in Godot
+2. Create a new scene with Node2D root
+3. Attach `showcase_example.gd` script
+4. Run scene - hero spawns with initial skills
+5. Watch automated skill XP demo (3 seconds)
+6. Press 1-4 keys to manually gain XP in different skills
+7. Press Space to view current skill levels
+
 ## Key Concepts Demonstrated
 
 **Unique vs Non-Unique**:

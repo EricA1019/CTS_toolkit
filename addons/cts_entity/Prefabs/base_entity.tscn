@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://vjjgbd1rti0m"]
+
+[ext_resource type="Script" path="res://addons/cts_entity/Core/entity_base.gd" id="1_script"]
+
+[node name="BaseEntity" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0, 0.6, 0.8, 1)

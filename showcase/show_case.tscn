@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://addons/cts_entity/Core/entity_base.gd" id="1_2gjou"]
+[ext_resource type="Resource" path="res://showcase/showcase_entity_config.tres" id="2_config"]
+[ext_resource type="Texture2D" path="res://addons/cts_entity/assets/survivor.png" id="3_sprite"]
+[ext_resource type="Script" path="res://addons/cts_stats/Containers/stats_container.gd" id="4_stats_container"]
+[ext_resource type="Script" path="res://addons/cts_items/Containers/inventory_container.gd" id="5_inventory_container"]
+[ext_resource type="Resource" path="res://showcase/showcase_inventory.tres" id="6_inventory_block"]
+[ext_resource type="Script" path="res://addons/cts_skills/Containers/skills_container.gd" id="7_skills_container"]
+[ext_resource type="Script" path="res://addons/cts_affix/Containers/affix_container.gd" id="8_affix_container"]
+[ext_resource type="Resource" path="res://showcase/showcase_skills.tres" id="9_skills_block"]
+[ext_resource type="Resource" path="res://showcase/showcase_affixes.tres" id="10_affix_block"]
+[ext_resource type="Script" path="res://addons/cts_abilities/Containers/abilities_container.gd" id="11_abilities_container"]
+
+[node name="ShowcaseEntity" type="Node2D"]
+script = ExtResource("1_2gjou")
+entity_config = ExtResource("2_config")
+
+[node name="StatsContainer" type="Node" parent="."]
+script = ExtResource("4_stats_container")
+
+[node name="InventoryContainer" type="Node" parent="."]
+script = ExtResource("5_inventory_container")
+inventory_block = ExtResource("6_inventory_block")
+
+[node name="AbilitiesContainer" type="Node" parent="."]
+script = ExtResource("11_abilities_container")
+
+[node name="ComponentsContainer" type="Node" parent="."]
+
+[node name="SkillsContainer" type="Node" parent="."]
+script = ExtResource("7_skills_container")
+skills_block = ExtResource("9_skills_block")
+
+[node name="AffixContainer" type="Node" parent="."]
+script = ExtResource("8_affix_container")
+affix_block = ExtResource("10_affix_block")
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals"]
+texture = ExtResource("3_sprite")
+
+[node name="Label" type="Label" parent="Visuals"]
+offset_left = -30.0
+offset_top = -40.0
+offset_right = 30.0
+offset_bottom = -25.0
+text = "Showcase"
+horizontal_alignment = 1

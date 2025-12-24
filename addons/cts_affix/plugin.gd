@@ -3,6 +3,8 @@ extends EditorPlugin
 
 const AUTOLOAD_NAME := "CTS_Affix"
 const AUTOLOAD_PATH := "res://addons/cts_affix/Core/affix_manager.gd"
+const SIGNAL_AUTOLOAD_NAME := "AffixSignalRegistry"
+const SIGNAL_AUTOLOAD_PATH := "res://addons/cts_affix/Core/affix_signal_registry.gd"
 const REQUIRED_DEPENDENCIES := ["CTS_Core"]
 
 func _enable_plugin() -> void:
@@ -12,10 +14,14 @@ func _enable_plugin() -> void:
         return
     if not Engine.has_singleton(AUTOLOAD_NAME):
         add_autoload_singleton(AUTOLOAD_NAME, AUTOLOAD_PATH)
+    if not Engine.has_singleton(SIGNAL_AUTOLOAD_NAME):
+        add_autoload_singleton(SIGNAL_AUTOLOAD_NAME, SIGNAL_AUTOLOAD_PATH)
 
 func _disable_plugin() -> void:
     if Engine.has_singleton(AUTOLOAD_NAME):
         remove_autoload_singleton(AUTOLOAD_NAME)
+    if Engine.has_singleton(SIGNAL_AUTOLOAD_NAME):
+        remove_autoload_singleton(SIGNAL_AUTOLOAD_NAME)
 
 func _validate_dependencies() -> bool:
     for dep in REQUIRED_DEPENDENCIES:

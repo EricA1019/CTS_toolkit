@@ -31,7 +31,7 @@ func after_each() -> void:
 	
 	# Clean up any remaining entities
 	for entity_id in _manager._entity_registry.keys():
-		var entity = _manager.get_entity(entity_id)
+		var entity: EntityBase = _manager.get_entity(entity_id)
 		if entity:
 			entity.queue_free()
 	

@@ -1,10 +1,6 @@
-# GLoot
+# CTS Toolbox – Items & Inventory (GLoot Heritage)
 
-<p align="center">
-  <img src="images/gloot_logo_128x128.png" />
-</p>
-
-A universal inventory system for the Godot game engine (version 4.4 and newer).
+> This project previously bundled the GLoot addon. The standalone GLoot files have been removed and core stack/merge logic now lives in `addons/cts_items/Core/stack_operations.gd` with thanks to the GLoot project.
 
 > NOTE: **Version 3.0 has been merged to `master`** and includes a number of changes that are not backwards-compatible with version 2.x. If you intend to upgrade from version 2 to version 3, there is a short [transition guide](docs/gloot_2_to_3_transition_guide.md) that will hopefully make the process smoother. If you, however, plan to stick to the old version, it can be found on the `v2.x` branch.
 
