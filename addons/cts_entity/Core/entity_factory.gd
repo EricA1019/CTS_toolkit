@@ -144,10 +144,13 @@ func _attach_typed_containers(entity: EntityBase, config: EntityConfig) -> void:
 	if config.stats_block:
 		var stats := entity.get_node_or_null("StatsContainer")
 		if stats == null:
-			stats = preload("res://addons/cts_stats/Containers/stats_container.gd").new()
-			stats.name = "StatsContainer"
-			entity.add_child(stats)
-		stats.stats_block = config.stats_block
+			# TODO: cts_stats addon not yet implemented - manual Stats node creation required
+			push_warning("EntityFactory: cts_stats addon missing - Stats container not created automatically")
+			# stats = preload("res://addons/cts_stats/Containers/stats_container.gd").new()
+			# stats.name = "StatsContainer"
+			# entity.add_child(stats)
+		if stats:
+			stats.stats_block = config.stats_block
 
 	if config.abilities_block:
 		var abil := entity.get_node_or_null("AbilitiesContainer")

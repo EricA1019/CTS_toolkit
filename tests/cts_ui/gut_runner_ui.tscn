@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/gut/gut.gd" id="1"]
+[ext_resource type="Script" path="res://tests/cts_ui/test_ui_components.gd" id="2"]
+
+[node name="GutRunner" type="Node"]
+
+[node name="Gut" type="Node" parent="."]
+script = ExtResource("1")
+_pre_run_script = ""
+_post_run_script = ""
+_test_prefix = "test_"
+_file_prefix = "test_"
+_inner_class_prefix = "Test"
+_temp_directory = "user://gut_temp_directory"
+_export_path = ""
+_include_subdirectories = true
+_directory1 = "res://tests/cts_ui/"
+_double_strategy = 1
+_log_level = 1
+_yield_between_tests = true
+_disable_colors = false
+_hide_orphans = false

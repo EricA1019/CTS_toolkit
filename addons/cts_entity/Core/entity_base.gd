@@ -49,22 +49,28 @@ var _did_cleanup: bool = false
 # =============================================================================
 
 ## Container for stats components (HP, stamina, etc.)
-@onready var stats_container: Node = $StatsContainer
+@onready var stats_container: Node = _get_optional_child("StatsContainer")
 
 ## Container for inventory system
-@onready var inventory_container: Node = $InventoryContainer
+@onready var inventory_container: Node = _get_optional_child("InventoryContainer")
 
 ## Container for abilities/skills
-@onready var abilities_container: Node = $AbilitiesContainer
+@onready var abilities_container: Node = _get_optional_child("AbilitiesContainer")
 
 ## Container for misc components (AI, movement, etc.)
-@onready var components_container: Node = $ComponentsContainer
+@onready var components_container: Node = _get_optional_child("ComponentsContainer")
 
 ## Optional typed containers (added if present in scene)
 @onready var skills_container: Node = get_node_or_null("SkillsContainer")
 @onready var affix_container: Node = get_node_or_null("AffixContainer")
 @onready var equipment_container: Node = get_node_or_null("EquipmentContainer")
 @onready var crafting_container: Node = get_node_or_null("CraftingContainer")
+
+func _get_optional_child(path: String) -> Node:
+	var node := get_node_or_null(path)
+	if node == null:
+		print("EntityBase: missing child ", path, " on ", name)
+	return node
 
 # =============================================================================
 # LIFECYCLE

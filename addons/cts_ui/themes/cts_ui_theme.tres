@@ -1,0 +1,8 @@
+[gd_resource type="Theme" format=3 uid="uid://cts_ui_theme"]
+
+[resource]
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/font_sizes/font_size = 16
+StatRow/base_type = &"HBoxContainer"
+StatRow/constants/separation = 4
+ItemSlot/base_type = &"TextureRect"

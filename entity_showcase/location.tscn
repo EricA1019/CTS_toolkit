@@ -45,7 +45,6 @@ layout_mode = 0
 layout_mode = 2
 
 [node name="PlayerBook" parent="UI" instance=ExtResource("3_book")]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

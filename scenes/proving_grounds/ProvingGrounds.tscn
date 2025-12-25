@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://ct5jg6taqyqkd"]
+
+[ext_resource type="Script" uid="uid://d1sqy180044l0" path="res://scenes/proving_grounds/scripts/proving_grounds.gd" id="1_sc632"]
+[ext_resource type="Script" path="res://scenes/proving_grounds/scripts/test_entity_spawner.gd" id="2_8byd5"]
+[ext_resource type="PackedScene" uid="uid://b2errpxsd3ark" path="res://scenes/proving_grounds/UnifiedUI.tscn" id="3_an77a"]
+
+[node name="ProvingGrounds" type="Node2D"]
+script = ExtResource("1_sc632")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="EntityFactory" type="Node" parent="."]
+script = ExtResource("2_8byd5")
+
+[node name="UnifiedUI" parent="." instance=ExtResource("3_an77a")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
