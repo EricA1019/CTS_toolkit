@@ -24,10 +24,38 @@ signal clear_requested
 # Lifecycle Methods
 # ------------------------------------------------------------------------------
 func _ready() -> void:
+	print("[UnifiedUI] UI Ready.")
+	
+	# Fallback assignments if exports fail
+	if not spawn_button:
+		print("[UnifiedUI] Spawn button export null, attempting fallback search...")
+		spawn_button = get_node_or_null("Control/VBoxContainer/Buttons/SpawnButton")
+		
+	if not clear_button:
+		print("[UnifiedUI] Clear button export null, attempting fallback search...")
+		clear_button = get_node_or_null("Control/VBoxContainer/Buttons/ClearButton")
+		
+	if not status_label:
+		status_label = get_node_or_null("Control/VBoxContainer/StatusLabel")
+		
+	if not log_container:
+		log_container = get_node_or_null("Control/VBoxContainer/LogContainer")
+	
 	if spawn_button:
-		spawn_button.pressed.connect(func(): spawn_requested.emit())
+		spawn_button.pressed.connect(func(): 
+			print("[UnifiedUI] Spawn button pressed.")
+			spawn_requested.emit()
+		)
+	else:
+		push_error("[UnifiedUI] Spawn button not assigned and fallback failed!")
+		
 	if clear_button:
-		clear_button.pressed.connect(func(): clear_requested.emit())
+		clear_button.pressed.connect(func(): 
+			print("[UnifiedUI] Clear button pressed.")
+			clear_requested.emit()
+		)
+	else:
+		push_error("[UnifiedUI] Clear button not assigned and fallback failed!")
 
 # ------------------------------------------------------------------------------
 # Public Methods

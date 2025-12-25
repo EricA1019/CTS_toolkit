@@ -1,0 +1,44 @@
+{
+  "affixes": [
+    {
+      "name": "Fierce",
+      "description": "Increases damage output."
+    },
+    {
+      "name": "Swift",
+      "description": "Increases movement speed."
+    },
+    {
+      "name": "Sturdy",
+      "description": "Increases maximum health."
+    },
+    {
+      "name": "Arcane",
+      "description": "Adds magical damage to attacks."
+    },
+    {
+      "name": "Vampiric",
+      "description": "Heals on hit."
+    },
+    {
+      "name": "Thorned",
+      "description": "Reflects damage back to attacker."
+    },
+    {
+      "name": "Ghostly",
+      "description": "Chance to dodge attacks."
+    },
+    {
+      "name": "Burning",
+      "description": "Attacks set enemies on fire."
+    },
+    {
+      "name": "Frozen",
+      "description": "Attacks slow enemies."
+    },
+    {
+      "name": "Toxic",
+      "description": "Attacks poison enemies."
+    }
+  ]
+}

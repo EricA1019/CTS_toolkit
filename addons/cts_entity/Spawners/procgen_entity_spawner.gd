@@ -1,10 +1,12 @@
-class_name TestEntitySpawner
+class_name ProcgenEntitySpawner
 extends Node
 
-## TestEntitySpawner
+## ProcgenEntitySpawner
 ##
-## Responsible for creating and configuring entities for the Proving Grounds.
-## Supports procgen with random affixes loaded from data.
+## A complex spawner that creates entities with randomized properties.
+## - Randomizes visual sprite from a list.
+## - Applies random affixes from a JSON data file.
+## - Adds visual labels for affixes.
 
 # ------------------------------------------------------------------------------
 # Signals
@@ -14,17 +16,14 @@ signal entity_created(entity: Node)
 # ------------------------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------------------------
-const AFFIX_DATA_PATH = "res://scenes/proving_grounds/data/affixes.json"
-const SURVIVOR_SPRITES = [
-	"res://addons/cts_entity/assets/survivor.png",
-	"res://addons/cts_entity/assets/survivor2.png",
-	"res://addons/cts_entity/assets/survivor3.png"
-]
+const DEFAULT_AFFIX_PATH = "res://addons/cts_entity/Data/affixes.json"
 
 # ------------------------------------------------------------------------------
 # Export Variables
 # ------------------------------------------------------------------------------
 @export var base_entity_scene: PackedScene
+@export_file("*.json") var affix_data_path: String = DEFAULT_AFFIX_PATH
+@export var survivor_sprites: Array[Texture2D] = []
 
 # ------------------------------------------------------------------------------
 # Internal State
@@ -36,45 +35,44 @@ var _affixes: Array = []
 # ------------------------------------------------------------------------------
 func _ready() -> void:
 	_load_affixes()
+	
+	# Load default sprites if none assigned (fallback for ease of use)
+	if survivor_sprites.is_empty():
+		_load_default_sprites()
 
 # ------------------------------------------------------------------------------
 # Public Methods
 # ------------------------------------------------------------------------------
 func create_entity(type: String = "base_entity") -> Node:
-	print("[TestEntitySpawner] Creating entity of type: ", type)
 	var instance: Node
 	
 	if base_entity_scene:
-		print("[TestEntitySpawner] Instantiating base scene...")
 		instance = base_entity_scene.instantiate()
 	else:
-		push_warning("[TestEntitySpawner] Base entity scene not assigned! Using basic Node2D.")
+		push_warning("[ProcgenEntitySpawner] Base entity scene not assigned! Using basic Node2D.")
 		instance = Node2D.new()
 	
 	# Set basic name
 	instance.name = type.capitalize() + "_" + str(randi())
-	print("[TestEntitySpawner] Base instance created: ", instance.name)
 	
-	# Setup Visuals (Survivor Sprite)
+	# Setup Visuals
 	_setup_visuals(instance)
 	
 	# Apply Affixes
 	_apply_random_affixes(instance)
 	
 	entity_created.emit(instance)
-	print("[TestEntitySpawner] Entity creation complete.")
 	return instance
 
 # ------------------------------------------------------------------------------
 # Private Methods
 # ------------------------------------------------------------------------------
 func _load_affixes() -> void:
-	print("[TestEntitySpawner] Loading affixes from: ", AFFIX_DATA_PATH)
-	if not FileAccess.file_exists(AFFIX_DATA_PATH):
-		push_error("[TestEntitySpawner] Affix data file not found: " + AFFIX_DATA_PATH)
+	if not FileAccess.file_exists(affix_data_path):
+		push_error("[ProcgenEntitySpawner] Affix data file not found: " + affix_data_path)
 		return
 		
-	var file = FileAccess.open(AFFIX_DATA_PATH, FileAccess.READ)
+	var file = FileAccess.open(affix_data_path, FileAccess.READ)
 	var content = file.get_as_text()
 	var json = JSON.new()
 	var error = json.parse(content)
@@ -83,43 +81,49 @@ func _load_affixes() -> void:
 		var data = json.data
 		if data.has("affixes"):
 			_affixes = data["affixes"]
-			print("[TestEntitySpawner] Loaded ", _affixes.size(), " affixes.")
+			print("[ProcgenEntitySpawner] Loaded ", _affixes.size(), " affixes.")
 		else:
-			push_error("[TestEntitySpawner] Affix data missing 'affixes' key.")
+			push_error("[ProcgenEntitySpawner] Affix data missing 'affixes' key.")
 	else:
-		push_error("[TestEntitySpawner] Failed to parse affix data: " + json.get_error_message())
+		push_error("[ProcgenEntitySpawner] Failed to parse affix data: " + json.get_error_message())
+
+func _load_default_sprites() -> void:
+	# Fallback to known paths in the addon
+	var paths = [
+		"res://addons/cts_entity/assets/survivor.png",
+		"res://addons/cts_entity/assets/survivor2.png",
+		"res://addons/cts_entity/assets/survivor3.png"
+	]
+	for path in paths:
+		if ResourceLoader.exists(path):
+			survivor_sprites.append(load(path))
 
 func _setup_visuals(entity: Node) -> void:
-	print("[TestEntitySpawner] Setting up visuals for: ", entity.name)
 	# Hide existing ColorRect if present (default in BaseEntity)
 	var color_rect = entity.get_node_or_null("ColorRect")
 	if color_rect:
-		print("[TestEntitySpawner] Hiding default ColorRect.")
 		color_rect.visible = false
 		
 	# Add Survivor Sprite
-	var sprite_path = SURVIVOR_SPRITES.pick_random()
-	print("[TestEntitySpawner] Loading sprite from: ", sprite_path)
-	var sprite = Sprite2D.new()
-	var tex = load(sprite_path)
+	var tex: Texture2D
+	if not survivor_sprites.is_empty():
+		tex = survivor_sprites.pick_random()
+	
 	if tex:
+		var sprite = Sprite2D.new()
 		sprite.texture = tex
-		print("[TestEntitySpawner] Sprite texture loaded successfully.")
+		sprite.name = "VisualSprite"
+		sprite.scale = Vector2(4, 4) # Scale up for visibility
+		entity.add_child(sprite)
 	else:
-		push_error("[TestEntitySpawner] Failed to load sprite texture!")
-		
-	sprite.name = "VisualSprite"
-	sprite.scale = Vector2(4, 4) # Scale up for visibility
-	entity.add_child(sprite)
+		push_warning("[ProcgenEntitySpawner] No sprites available to assign.")
 
 func _apply_random_affixes(entity: Node) -> void:
 	if _affixes.is_empty():
-		print("[TestEntitySpawner] No affixes available to apply.")
 		return
 		
 	var affix = _affixes.pick_random()
 	var affix_name = affix["name"]
-	print("[TestEntitySpawner] Applying affix: ", affix_name)
 	
 	# Update Entity Name
 	entity.name = affix_name + " " + entity.name
