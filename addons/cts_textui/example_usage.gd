@@ -10,7 +10,7 @@ func _ready() -> void:
 	_tooltip_service = get_node_or_null("/root/TooltipService")
 	
 	# Context menu example
-	var context_menu = ContextMenu.new()
+	var context_menu = TooltipContextMenu.new()
 	context_menu.attach_to(self)
 	context_menu.add_item("Show Simple Tooltip", _show_simple_tooltip)
 	context_menu.add_item("Show Data Tooltip", _show_data_tooltip)

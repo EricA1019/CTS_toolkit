@@ -1,0 +1,55 @@
+[gd_resource type="Resource" script_class="RecipeBook" load_steps=16 format=3 uid="uid://c5kg4ab33h6nj"]
+
+[ext_resource type="Script" uid="uid://blr28mlb6xh1g" path="res://addons/cts_items/Data/ingredient.gd" id="1_3fv6u"]
+[ext_resource type="Resource" uid="uid://cm3oyfuivnidf" path="res://addons/cts_items/Data/test_items/iron_ore.tres" id="2_s1afu"]
+[ext_resource type="Resource" uid="uid://7asgnjgltv2q" path="res://addons/cts_items/Data/test_items/iron_bar.tres" id="3_l3khp"]
+[ext_resource type="Script" uid="uid://bx6g182i1m0ek" path="res://addons/cts_items/Data/recipe.gd" id="4_hthiy"]
+[ext_resource type="Resource" uid="uid://dkv07rqq5yjhk" path="res://addons/cts_items/Data/test_items/wood.tres" id="5_ufef3"]
+[ext_resource type="Resource" uid="uid://bxbyvk0oofpsa" path="res://addons/cts_items/Data/test_items/wooden_sword.tres" id="6_n8hap"]
+[ext_resource type="Resource" uid="uid://d3x4vrlnvo356" path="res://addons/cts_items/Data/test_items/health_potion.tres" id="7_nw8wy"]
+[ext_resource type="Script" uid="uid://bpyrgvsoko7jh" path="res://addons/cts_items/Data/recipe_book.gd" id="8_os7ie"]
+
+[sub_resource type="Resource" id="Resource_lqy6q"]
+script = ExtResource("1_3fv6u")
+item = ExtResource("2_s1afu")
+amount = 2
+
+[sub_resource type="Resource" id="Resource_11mvu"]
+script = ExtResource("4_hthiy")
+id = &"smelt_iron"
+result_item = ExtResource("3_l3khp")
+ingredients = Array[ExtResource("1_3fv6u")]([SubResource("Resource_lqy6q")])
+station_type = "furnace"
+
+[sub_resource type="Resource" id="Resource_e3lhi"]
+script = ExtResource("1_3fv6u")
+item = ExtResource("5_ufef3")
+amount = 5
+
+[sub_resource type="Resource" id="Resource_kkbnb"]
+script = ExtResource("1_3fv6u")
+item = ExtResource("3_l3khp")
+
+[sub_resource type="Resource" id="Resource_un11a"]
+script = ExtResource("4_hthiy")
+id = &"craft_wooden_sword"
+result_item = ExtResource("6_n8hap")
+ingredients = Array[ExtResource("1_3fv6u")]([SubResource("Resource_e3lhi"), SubResource("Resource_kkbnb")])
+station_type = "workbench"
+
+[sub_resource type="Resource" id="Resource_nydu1"]
+script = ExtResource("1_3fv6u")
+item = ExtResource("5_ufef3")
+amount = 2
+
+[sub_resource type="Resource" id="Resource_x0j72"]
+script = ExtResource("4_hthiy")
+id = &"brew_health_potion"
+result_item = ExtResource("7_nw8wy")
+amount = 3
+ingredients = Array[ExtResource("1_3fv6u")]([SubResource("Resource_nydu1")])
+station_type = "alchemy"
+
+[resource]
+script = ExtResource("8_os7ie")
+recipes = [SubResource("Resource_11mvu"), SubResource("Resource_un11a"), SubResource("Resource_x0j72")]

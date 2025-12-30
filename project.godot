@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="CTS_toolbox"
-run/main_scene="uid://bivton5rtddro"
+run/main_scene="res://scenes/proving_grounds/ProvingGrounds.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,7 +20,6 @@ config/icon="res://icon.svg"
 CTS_Core="*res://addons/cts_core/Core/core_manager.gd"
 CTS_Entity="*res://addons/cts_entity/Core/entity_manager.gd"
 EntitySignalRegistry="*res://addons/cts_entity/Core/entity_signal_registry.gd"
-CTS_Items="*res://addons/cts_items/Core/cts_items_manager.gd"
 AppConfig="*res://addons/maaacks_game_template/base/nodes/autoloads/app_config/app_config.tscn"
 SceneLoader="*res://addons/maaacks_game_template/base/nodes/autoloads/scene_loader/scene_loader.tscn"
 ProjectMusicController="*res://addons/maaacks_game_template/base/nodes/autoloads/music_controller/project_music_controller.tscn"
@@ -30,10 +29,38 @@ TooltipManager="*res://addons/tooltips_pro/scripts/tooltip_manager.gd"
 TooltipPlaceholderVariables="*res://addons/tooltips_pro/scripts/tooltip_placeholder_variables.gd"
 TooltipLinkData="*res://addons/tooltips_pro/scripts/tooltip_link_data.gd"
 DragDropManager="*res://addons/cts_ui/Core/drag_drop_manager.gd"
+LimboConsole="*res://addons/limbo_console/limbo_console.gd"
+CTS_Tools="*res://addons/cts_tools/Core/cli_manager.gd"
+EventBus="*res://addons/cts_core/Core/event_bus.gd"
+PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
+ItemsSignalRegistry="*res://addons/cts_items/Core/items_signal_registry.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/cts_core/plugin.cfg", "res://addons/cts_entity/plugin.cfg", "res://addons/gdai-mcp-plugin-godot/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/maaacks_game_template/plugin.cfg", "res://addons/tooltips_pro/plugin.cfg", "res://addons/cts_context_menu/plugin.cfg", "res://addons/cts_ui/plugin.cfg")
+enabled=PackedStringArray("res://addons/cts_context_menu/plugin.cfg", "res://addons/cts_core/plugin.cfg", "res://addons/cts_entity/plugin.cfg", "res://addons/cts_items/plugin.cfg", "res://addons/cts_tools/plugin.cfg", "res://addons/cts_ui/plugin.cfg", "res://addons/gdai-mcp-plugin-godot/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/limbo_console/plugin.cfg", "res://addons/maaacks_game_template/plugin.cfg", "res://addons/phantom_camera/plugin.cfg", "res://addons/tooltips_pro/plugin.cfg")
+
+[input]
+
+limbo_console_toggle={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":96,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+limbo_auto_complete_reverse={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194306,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+limbo_console_search_history={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":true,"meta_pressed":false,"pressed":false,"keycode":82,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+toggle_player_book={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":73,"key_label":0,"unicode":105,"location":0,"echo":false,"script":null)
+]
+}
 
 [internationalization]
 

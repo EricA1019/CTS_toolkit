@@ -1,5 +1,5 @@
 @tool
-class_name ContextMenuEntry
+class_name TooltipContextMenuEntry
 extends Resource
 ## A resource representing a single context menu entry.
 
@@ -19,4 +19,4 @@ enum EntryType {
 @export var icon: Texture2D = null
 
 @export_category("Submenu")
-@export var submenu_entries: Array[ContextMenuEntry] = []
+@export var submenu_entries: Array[TooltipContextMenuEntry] = []

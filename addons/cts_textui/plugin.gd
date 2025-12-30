@@ -8,7 +8,7 @@ func _enter_tree() -> void:
 	var context_menu_script := preload("res://addons/cts_textui/Code/context_menu_control.gd")
 	var icon := preload("res://addons/cts_textui/Assets/Icon.png")
 	
-	add_custom_type("ContextMenuControl", "Control", context_menu_script, icon)
+	add_custom_type("TooltipContextMenuControl", "Control", context_menu_script, icon)
 	add_custom_type("TooltipControl", "Control", preload("res://addons/cts_textui/Core/tooltip_control.gd"), icon)
 	
 	# Add autoload for tooltip service
@@ -17,7 +17,7 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	# Remove custom types
-	remove_custom_type("ContextMenuControl")
+	remove_custom_type("TooltipContextMenuControl")
 	remove_custom_type("TooltipControl")
 	
 	# Remove autoload (only if it exists)

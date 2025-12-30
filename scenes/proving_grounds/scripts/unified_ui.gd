@@ -40,12 +40,19 @@ func _ready() -> void:
 		
 	if not log_container:
 		log_container = get_node_or_null("Control/VBoxContainer/LogContainer")
-	
+
+	# Button connections (ensure these remain and are connected properly)
 	if spawn_button:
 		spawn_button.pressed.connect(func(): 
 			print("[UnifiedUI] Spawn button pressed.")
 			spawn_requested.emit()
 		)
+		# Add shortcut for PIS testing
+		var shortcut = Shortcut.new()
+		var event = InputEventKey.new()
+		event.keycode = KEY_S
+		shortcut.events.append(event)
+		spawn_button.shortcut = shortcut
 	else:
 		push_error("[UnifiedUI] Spawn button not assigned and fallback failed!")
 		
@@ -56,23 +63,23 @@ func _ready() -> void:
 		)
 	else:
 		push_error("[UnifiedUI] Clear button not assigned and fallback failed!")
+		log_container.get_child(0).queue_free()
 
 # ------------------------------------------------------------------------------
 # Public Methods
 # ------------------------------------------------------------------------------
-func update_status(text: String) -> void:
+func update_status(message: String) -> void:
 	if status_label:
-		status_label.text = text
+		status_label.text = message
+		print("[UnifiedUI] Status updated: ", message)
+	else:
+		push_warning("[UnifiedUI] Cannot update status - status_label not assigned")
 
-func log_message(text: String) -> void:
-	if not log_container:
-		print("UI Log: ", text)
-		return
-		
-	var label = Label.new()
-	label.text = "[%s] %s" % [Time.get_time_string_from_system(), text]
-	log_container.add_child(label)
-	
-	# Keep log size manageable
-	if log_container.get_child_count() > 10:
-		log_container.get_child(0).queue_free()
+func log_message(message: String) -> void:
+	print("[UnifiedUI] Log: ", message)
+	if log_container:
+		var label := Label.new()
+		label.text = message
+		log_container.add_child(label)
+	else:
+		push_warning("[UnifiedUI] Cannot log message - log_container not assigned")

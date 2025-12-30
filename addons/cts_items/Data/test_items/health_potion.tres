@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CtsItemDefinition" load_steps=3 format=3 uid="uid://d3x4vrlnvo356"]
+
+[ext_resource type="Script" uid="uid://blr28mlb6xh1g" path="res://addons/cts_items/Data/ingredient.gd" id="1_fqche"]
+[ext_resource type="Script" uid="uid://nndxytg63pnv" path="res://addons/cts_items/Data/item_definition.gd" id="2_54moq"]
+
+[resource]
+script = ExtResource("2_54moq")
+item_id = &"health_potion"
+display_name = "Health Potion"
+description = "Restores 50 HP"
+item_type = 2
+max_stack_size = 20
+weight = 0.2
+value = 15

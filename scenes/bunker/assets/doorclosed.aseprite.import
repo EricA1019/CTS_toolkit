@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://dd63aefi3rdui"
+path="res://.godot/imported/doorclosed.aseprite-ac20f54e476c06d01a8843bff678f5e5.res"
+
+[deps]
+
+source_file="res://src/bunker/assets/doorclosed.aseprite"
+dest_files=["res://.godot/imported/doorclosed.aseprite-ac20f54e476c06d01a8843bff678f5e5.res"]
+
+[params]
+

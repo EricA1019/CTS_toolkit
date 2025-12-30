@@ -1,0 +1,61 @@
+{
+	"version": "1.0",
+	"events": [
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": true,
+			"frame": 60,
+			"time": 1000
+		},
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": false,
+			"frame": 65,
+			"time": 1050
+		},
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": true,
+			"frame": 120,
+			"time": 2000
+		},
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": false,
+			"frame": 125,
+			"time": 2050
+		},
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": true,
+			"frame": 180,
+			"time": 3000
+		},
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": false,
+			"frame": 185,
+			"time": 3050
+		},
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": true,
+			"frame": 240,
+			"time": 4000
+		},
+		{
+			"type": "key",
+			"keycode": 83,
+			"pressed": false,
+			"frame": 245,
+			"time": 4050
+		}
+	]
+}

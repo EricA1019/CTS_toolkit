@@ -1,13 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://vjjgbd1rti0m"]
+[gd_scene load_steps=4 format=3 uid="uid://vjjgbd1rti0m"]
 
 [ext_resource type="Script" path="res://addons/cts_entity/Core/entity_base.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c8w4x2x2x2x2x" path="res://addons/cts_entity/assets/survivor.png" id="2_sprite"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_select"]
+radius = 16.0
 
 [node name="BaseEntity" type="Node2D"]
 script = ExtResource("1_script")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals"]
+texture = ExtResource("2_sprite")
+
+[node name="AffixLabel" type="Label" parent="Visuals"]
 offset_left = -20.0
-offset_top = -20.0
+offset_top = -40.0
 offset_right = 20.0
-offset_bottom = 20.0
-color = Color(0, 0.6, 0.8, 1)
+offset_bottom = -17.0
+horizontal_alignment = 1
+
+[node name="SelectArea" type="Area2D" parent="."]
+input_pickable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SelectArea"]
+shape = SubResource("CircleShape2D_select")

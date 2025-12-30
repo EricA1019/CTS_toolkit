@@ -78,6 +78,35 @@ func get_skill_value(skill_type: int) -> float:
         value = override_value
     return value
 
+# Adapter for PlayerBook compatibility. Accepts human-readable stat names.
+func get_stat(stat_name: String) -> float:
+    if stat_name == null:
+        return 0.0
+    var key := stat_name.strip_edges().to_lower().replace(" ", "_")
+    var mapping := {
+        "rifles": SkillEnums.SkillType.RIFLES,
+        "pistols": SkillEnums.SkillType.PISTOLS,
+        "shotguns": SkillEnums.SkillType.SHOTGUNS,
+        "melee_bladed": SkillEnums.SkillType.MELEE_BLADED,
+        "melee_blunt": SkillEnums.SkillType.MELEE_BLUNT,
+        "unarmed": SkillEnums.SkillType.UNARMED,
+        "scavenging": SkillEnums.SkillType.SCAVENGING,
+        "dodge": SkillEnums.SkillType.DODGE,
+        "survival_instinct": SkillEnums.SkillType.SURVIVAL_INSTINCT,
+        "pain_tolerance": SkillEnums.SkillType.PAIN_TOLERANCE
+    }
+    var skill_type := mapping.get(key, null)
+    if skill_type == null:
+        # Fallback: check enum keys for a case-insensitive match
+        for name in SkillEnums.SkillType.keys():
+            if name.to_lower() == key:
+                skill_type = SkillEnums.SkillType[name]
+                break
+    if skill_type == null:
+        push_warning("SkillsContainer.get_stat: unknown stat '%s'" % stat_name)
+        return 0.0
+    return get_skill_value(skill_type)
+
 func handle_action(action_type: String, context: Dictionary) -> void:
     if skills_block == null:
         return

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8q4y2x501w3"]
+
+[ext_resource type="Script" path="res://scenes/pis_test/context_menu_test.gd" id="1_script"]
+
+[node name="ContextMenuTest" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)

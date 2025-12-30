@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CtsItemDefinition" load_steps=3 format=3 uid="uid://dkv07rqq5yjhk"]
+
+[ext_resource type="Script" uid="uid://blr28mlb6xh1g" path="res://addons/cts_items/Data/ingredient.gd" id="1_0gy41"]
+[ext_resource type="Script" uid="uid://nndxytg63pnv" path="res://addons/cts_items/Data/item_definition.gd" id="2_73ed3"]
+
+[resource]
+script = ExtResource("2_73ed3")
+item_id = &"wood"
+display_name = "Wood"
+description = "Basic crafting material gathered from trees"
+item_type = 6
+max_stack_size = 99
+weight = 0.5
+value = 1

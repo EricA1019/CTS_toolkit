@@ -1,0 +1,15 @@
+{
+	"version": "1.0",
+	"events": [
+		{ "type": "key", "keycode": 83, "pressed": true, "frame": 60, "time": 1000 },
+		{ "type": "key", "keycode": 83, "pressed": false, "frame": 65, "time": 1050 },
+		{ "type": "key", "keycode": 83, "pressed": true, "frame": 75, "time": 1200 },
+		{ "type": "key", "keycode": 83, "pressed": false, "frame": 80, "time": 1250 },
+		{ "type": "key", "keycode": 83, "pressed": true, "frame": 90, "time": 1400 },
+		{ "type": "key", "keycode": 83, "pressed": false, "frame": 95, "time": 1450 },
+		{ "type": "key", "keycode": 83, "pressed": true, "frame": 105, "time": 1600 },
+		{ "type": "key", "keycode": 83, "pressed": false, "frame": 110, "time": 1650 },
+		{ "type": "key", "keycode": 83, "pressed": true, "frame": 120, "time": 1800 },
+		{ "type": "key", "keycode": 83, "pressed": false, "frame": 125, "time": 1850 }
+	]
+}

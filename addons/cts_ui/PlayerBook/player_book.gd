@@ -31,6 +31,6 @@ func toggle() -> void:
 		book_closed.emit()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_focus_next"):
+	if event.is_action_pressed("toggle_player_book"):
 		toggle()
 		get_viewport().set_input_as_handled()

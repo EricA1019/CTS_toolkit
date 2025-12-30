@@ -32,6 +32,17 @@ signal entity_despawning(entity_id: String, reason: String)
 ## Emitted after despawn delay, before queue_free
 signal entity_cleanup_started(entity_id: String)
 
+## Selection signals for entities (signal-first: add to contracts before use)
+## Emitted when an entity is selected via input (click, UI pick, etc.)
+signal entity_selected(entity_id: String, entity_node: Node)
+
+## Emitted when an entity is deselected (click elsewhere, second click to cancel)
+signal entity_deselected(entity_id: String)
+
+## Emitted when a context menu action is triggered on an entity
+## action_type: "look_skills", "look_inventory", etc.
+signal entity_action_requested(entity_id: String, action_type: String, entity_node: Node)
+
 # =============================================================================
 # ENTITY FACTORY SIGNALS (Creation)
 # =============================================================================
@@ -47,6 +58,24 @@ signal entity_scene_loaded(scene_path: String, entity_id: String)
 
 ## Emitted when entity creation aborted (validation failure)
 signal entity_generation_failed(entity_id: String, reason: String)
+
+# =============================================================================
+# SPAWN SYSTEM SIGNALS (Placement)
+# =============================================================================
+
+## Emitted when a system requests an entity spawn (UI, GameLogic, etc.)
+## Handled by EntityManager to find appropriate SpawnPoint or create at position
+signal spawn_requested(category: int, position: Vector2, data: Dictionary)
+
+## Emitted when a SpawnPoint registers itself with the system
+signal spawn_point_registered(spawn_point: Node)
+
+## Emitted when a SpawnPoint is unregistered (freed)
+signal spawn_point_unregistered(spawn_point: Node)
+
+## Emitted when a SpawnPoint successfully spawns an entity
+signal spawn_point_activated(spawn_point: Node, entity: Node)
+
 
 ## Emitted when custom scene missing required containers
 signal container_validation_failed(scene_path: String, missing_containers: Array)

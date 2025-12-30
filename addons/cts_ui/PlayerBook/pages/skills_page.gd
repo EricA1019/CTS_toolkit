@@ -8,23 +8,27 @@ var _stats_component: Node
 @onready var container: VBoxContainer = $ScrollContainer/VBoxContainer
 
 func setup(event_bus: Node, data_provider: Node) -> void:
+	print("[SkillsPage] setup() called with provider: ", data_provider.name if data_provider else "null")
 	if not config:
 		push_warning("SkillsPage: No config provided.")
 		return
-		
+	
+	print("[SkillsPage] Config title:", config.title, " component_name:", config.component_name)
 	name = config.title
 	
 	# Try to find the component
 	if data_provider.has_node(config.component_name):
 		_stats_component = data_provider.get_node(config.component_name)
+		print("[SkillsPage] Found component: ", _stats_component.name)
 	else:
-		push_warning("SkillsPage: Could not find component %s on provider." % config.component_name)
+		push_warning("SkillsPage: Could not find component %s on provider. Provider children: %s" % [config.component_name, data_provider.get_children()])
 		return
 		
 	# Connect signals
 	if event_bus.has_signal("stat_changed"):
 		event_bus.stat_changed.connect(_on_stat_changed)
-		
+	
+	print("[SkillsPage] Building UI for stats:", config.stats_to_show)
 	_build_ui()
 
 func _build_ui() -> void:

@@ -1,5 +1,5 @@
 extends Node
-class_name EntityFactory
+class_name CTSEntityFactory
 
 ## Entity factory for cts_entity plugin
 ## Creates entities from EntityConfig (data-driven) or PackedScene (handcrafted)
@@ -166,9 +166,12 @@ func _attach_typed_containers(entity: EntityBase, config: EntityConfig) -> void:
 ## @param parent: Parent node to add entity to
 ## @return: EntityBase instance or null on failure
 func spawn_at_position(config: EntityConfig, global_pos: Vector2, parent: Node) -> EntityBase:
+	print("[EntityFactory] spawn_at_position called with pos: ", global_pos)
 	var entity := create_entity(config, parent)
 	if entity:
+		print("[EntityFactory] Setting entity.global_position = ", global_pos)
 		entity.global_position = global_pos
+		print("[EntityFactory] After set, entity.global_position = ", entity.global_position)
 	return entity
 
 ## Reset ID counters (useful for testing or level transitions)

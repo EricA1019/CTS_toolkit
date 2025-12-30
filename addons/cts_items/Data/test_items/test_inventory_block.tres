@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="InventoryBlock" load_steps=2 format=3 uid="uid://btnqeirqq51i2"]
+
+[ext_resource type="Script" uid="uid://p6s1cf04bgfg" path="res://addons/cts_items/Data/inventory_block.gd" id="1_n6mia"]
+
+[resource]
+script = ExtResource("1_n6mia")

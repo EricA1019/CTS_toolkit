@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://test_item_entity"]
+
+[ext_resource type="Script" path="res://addons/cts_items/Containers/inventory_container.gd" id="1"]
+[ext_resource type="Script" path="res://addons/cts_items/Containers/equipment_container.gd" id="2"]
+[ext_resource type="Script" path="res://addons/cts_items/Containers/crafting_container.gd" id="3"]
+[ext_resource type="Resource" uid="uid://test_recipe_book" path="res://addons/cts_items/Data/test_recipes/test_recipe_book.tres" id="4"]
+[ext_resource type="Resource" uid="uid://test_inventory_block" path="res://addons/cts_items/Data/test_items/test_inventory_block.tres" id="5"]
+
+[node name="TestItemEntity" type="Node2D"]
+
+[node name="InventoryContainer" type="Node" parent="."]
+script = ExtResource("1")
+entity_id = "test_player"
+inventory_block = ExtResource("5")
+
+[node name="EquipmentContainer" type="Node" parent="."]
+script = ExtResource("2")
+entity_id = "test_player"
+
+[node name="CraftingContainer" type="Node" parent="."]
+script = ExtResource("3")
+entity_id = "test_player"
+recipe_book = ExtResource("4")

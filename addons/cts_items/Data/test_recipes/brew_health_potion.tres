@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CtsRecipe" load_steps=6 format=3 uid="uid://djrn1cfd714x5"]
+
+[ext_resource type="Script" uid="uid://blr28mlb6xh1g" path="res://addons/cts_items/Data/ingredient.gd" id="1_crdxk"]
+[ext_resource type="Resource" uid="uid://dkv07rqq5yjhk" path="res://addons/cts_items/Data/test_items/wood.tres" id="2_lvrp0"]
+[ext_resource type="Resource" uid="uid://d3x4vrlnvo356" path="res://addons/cts_items/Data/test_items/health_potion.tres" id="3_5hx3c"]
+[ext_resource type="Script" uid="uid://bx6g182i1m0ek" path="res://addons/cts_items/Data/recipe.gd" id="4_tw0ju"]
+
+[sub_resource type="Resource" id="Resource_nydu1"]
+script = ExtResource("1_crdxk")
+item = ExtResource("2_lvrp0")
+amount = 2
+
+[resource]
+script = ExtResource("4_tw0ju")
+id = &"brew_health_potion"
+result_item = ExtResource("3_5hx3c")
+amount = 3
+ingredients = Array[ExtResource("1_crdxk")]([SubResource("Resource_nydu1")])
+station_type = "alchemy"

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d28phllgiowno"]
+
+[ext_resource type="Script" uid="uid://dcjpu5i4vque3" path="res://addons/cts_items/Data/test_items/test_items_system.gd" id="1_0fsd7"]
+
+[node name="ItemsSystemTest" type="Node"]
+script = ExtResource("1_0fsd7")

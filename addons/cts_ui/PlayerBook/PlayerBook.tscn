@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://playerbook_uid"]
+[gd_scene load_steps=4 format=3 uid="uid://playerbook_uid"]
 
 [ext_resource type="Script" path="res://addons/cts_ui/PlayerBook/player_book.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://addons/cts_ui/PlayerBook/pages/SkillsPage.tscn" id="2_skillspage"]
+[ext_resource type="Resource" path="res://scenes/proving_grounds/resources/skills_stat_page_config.tres" id="3_statconfig"]
 
 [node name="PlayerBook" type="TabContainer"]
 anchors_preset = 15
@@ -9,3 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
+
+[node name="SkillsPage" parent="." instance=ExtResource("2_skillspage")]
+config = ExtResource("3_statconfig")

@@ -1,0 +1,95 @@
+{
+	"version": "1.0",
+	"events": [
+		{
+			"type": "key",
+			"keycode": 65,
+			"pressed": true,
+			"frame": 60,
+			"time": 1000,
+			"comment": "Press A key (Button 1)"
+		},
+		{
+			"type": "key",
+			"keycode": 65,
+			"pressed": false,
+			"frame": 65,
+			"time": 1050
+		},
+		{
+			"type": "wait",
+			"frames": 30,
+			"frame": 95,
+			"time": 1500,
+			"comment": "Wait half second"
+		},
+		{
+			"type": "key",
+			"keycode": 66,
+			"pressed": true,
+			"frame": 125,
+			"time": 2000,
+			"comment": "Press B key (Button 2)"
+		},
+		{
+			"type": "key",
+			"keycode": 66,
+			"pressed": false,
+			"frame": 130,
+			"time": 2050
+		},
+		{
+			"type": "wait",
+			"frames": 30,
+			"frame": 160,
+			"time": 2500,
+			"comment": "Wait half second"
+		},
+		{
+			"type": "key",
+			"keycode": 67,
+			"pressed": true,
+			"frame": 190,
+			"time": 3000,
+			"comment": "Press C key (Button 3)"
+		},
+		{
+			"type": "key",
+			"keycode": 67,
+			"pressed": false,
+			"frame": 195,
+			"time": 3050
+		},
+		{
+			"type": "wait",
+			"frames": 30,
+			"frame": 225,
+			"time": 3500,
+			"comment": "Wait half second"
+		},
+		{
+			"type": "mouse_move",
+			"position": {"x": 640, "y": 400},
+			"frame": 255,
+			"time": 4000,
+			"comment": "Move to mouse button position"
+		},
+		{
+			"type": "mouse_button",
+			"button": 1,
+			"pressed": true,
+			"position": {"x": 640, "y": 400},
+			"frame": 285,
+			"time": 4500,
+			"comment": "Click mouse button"
+		},
+		{
+			"type": "mouse_button",
+			"button": 1,
+			"pressed": false,
+			"position": {"x": 640, "y": 400},
+			"frame": 290,
+			"time": 4550
+		}
+	]
+}

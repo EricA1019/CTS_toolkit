@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EntityConfig" load_steps=5 format=3 uid="uid://b30nqt8s7fldw"]
+
+[ext_resource type="Script" uid="uid://bssny2deo86a4" path="res://addons/cts_entity/Data/entity_config.gd" id="1_ncqfc"]
+[ext_resource type="Script" uid="uid://bhehqh85a4k85" path="res://addons/cts_entity/Core/entity_resource.gd" id="2_23q7m"]
+[ext_resource type="Texture2D" uid="uid://4j7s6wovh5pu" path="res://icon.svg" id="3_p5p6q"]
+
+[sub_resource type="Resource" id="Resource_h685x"]
+script = ExtResource("2_23q7m")
+sprite_texture = ExtResource("3_p5p6q")
+scale = Vector2(0.5, 0.5)
+
+[resource]
+script = ExtResource("1_ncqfc")
+entity_id = "zombie"
+entity_name = "Test Zombie"
+visual_data = SubResource("Resource_h685x")

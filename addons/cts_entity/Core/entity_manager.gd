@@ -10,7 +10,7 @@ extends Node
 ##   CTS_Entity.despawn_all_by_type("bandit")
 
 const EntityBase = preload("res://addons/cts_entity/Core/entity_base.gd")
-const EntityFactory = preload("res://addons/cts_entity/Core/entity_factory.gd")
+const CTSEntityFactory = preload("res://addons/cts_entity/Core/entity_factory.gd")
 const EntityConfig = preload("res://addons/cts_entity/Data/entity_config.gd")
 @onready var _signals: Node = EntitySignalRegistry
 
@@ -31,8 +31,14 @@ var _entity_registry: Dictionary = {}
 ## Entities by type tracking (entity_type -> Array[String])
 var _entities_by_type: Dictionary = {}
 
+## Registered spawn points
+var _spawn_points: Array[Node] = []
+
+## Queue of pending spawns
+var _spawn_queue: Array[Dictionary] = []
+
 ## Entity factory instance
-var _factory: EntityFactory = null
+var _factory: CTSEntityFactory = null
 
 # =============================================================================
 # LIFECYCLE
@@ -40,13 +46,16 @@ var _factory: EntityFactory = null
 
 func _ready() -> void:
 	# Create factory
-	_factory = EntityFactory.new()
+	_factory = CTSEntityFactory.new()
 	_factory.name = "EntityFactory"
 	add_child(_factory)
 	
 	# Connect to factory signals
 	if _signals:
 		_signals.connect("entity_spawned", _on_entity_spawned)
+		_signals.connect("spawn_requested", _on_spawn_requested)
+		_signals.connect("spawn_point_registered", _on_spawn_point_registered)
+		_signals.connect("spawn_point_unregistered", _on_spawn_point_unregistered)
 	
 	print("[EntityManager] Initialized (autoload: CTS_Entity)")
 
@@ -195,6 +204,36 @@ func spawn_at_position(config: EntityConfig, global_pos: Vector2, parent: Node) 
 func reset_factory_counters() -> void:
 	if _factory:
 		_factory.reset_counters()
+
+# =============================================================================
+# SPAWN SYSTEM HANDLERS
+# =============================================================================
+
+func _on_spawn_point_registered(spawn_point: Node) -> void:
+	if not spawn_point in _spawn_points:
+		_spawn_points.append(spawn_point)
+
+func _on_spawn_point_unregistered(spawn_point: Node) -> void:
+	if spawn_point in _spawn_points:
+		_spawn_points.erase(spawn_point)
+
+func _on_spawn_requested(category: int, position: Vector2, data: Dictionary) -> void:
+	# Basic implementation: Immediate spawn
+	# In future: Add to _spawn_queue and process in _process()
+	
+	var config: Resource = data.get("config")
+	if not config:
+		push_warning("[EntityManager] Spawn requested without config")
+		return
+		
+	var parent: Node = data.get("parent", get_tree().current_scene)
+	var spawn_point: Node = data.get("spawn_point")
+	
+	var entity = _factory.spawn_at_position(config, position, parent)
+	
+	if spawn_point and is_instance_valid(entity):
+		if _signals:
+			_signals.spawn_point_activated.emit(spawn_point, entity)
 
 # =============================================================================
 # INTERNAL HELPERS

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CtsRecipe" load_steps=8 format=3 uid="uid://mdymujx0i8yi"]
+
+[ext_resource type="Script" uid="uid://blr28mlb6xh1g" path="res://addons/cts_items/Data/ingredient.gd" id="1_f0hrp"]
+[ext_resource type="Resource" uid="uid://dkv07rqq5yjhk" path="res://addons/cts_items/Data/test_items/wood.tres" id="2_ehc1u"]
+[ext_resource type="Resource" uid="uid://7asgnjgltv2q" path="res://addons/cts_items/Data/test_items/iron_bar.tres" id="3_hlsto"]
+[ext_resource type="Resource" uid="uid://bxbyvk0oofpsa" path="res://addons/cts_items/Data/test_items/wooden_sword.tres" id="4_gp1ns"]
+[ext_resource type="Script" uid="uid://bx6g182i1m0ek" path="res://addons/cts_items/Data/recipe.gd" id="5_7fpu6"]
+
+[sub_resource type="Resource" id="Resource_e3lhi"]
+script = ExtResource("1_f0hrp")
+item = ExtResource("2_ehc1u")
+amount = 5
+
+[sub_resource type="Resource" id="Resource_kkbnb"]
+script = ExtResource("1_f0hrp")
+item = ExtResource("3_hlsto")
+
+[resource]
+script = ExtResource("5_7fpu6")
+id = &"craft_wooden_sword"
+result_item = ExtResource("4_gp1ns")
+ingredients = Array[ExtResource("1_f0hrp")]([SubResource("Resource_e3lhi"), SubResource("Resource_kkbnb")])
+station_type = "workbench"

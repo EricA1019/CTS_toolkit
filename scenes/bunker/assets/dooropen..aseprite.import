@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://cnsh56npi7v54"
+path="res://.godot/imported/dooropen..aseprite-60c03087d537d9862727b2acada15d70.res"
+
+[deps]
+
+source_file="res://src/bunker/assets/dooropen..aseprite"
+dest_files=["res://.godot/imported/dooropen..aseprite-60c03087d537d9862727b2acada15d70.res"]
+
+[params]
+

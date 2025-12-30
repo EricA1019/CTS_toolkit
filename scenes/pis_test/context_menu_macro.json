@@ -1,0 +1,9 @@
+{
+	"events": [
+		{ "type": "key", "keycode": 69, "pressed": true, "frame": 10 },
+		{ "type": "key", "keycode": 69, "pressed": false, "frame": 15 },
+		{ "type": "wait", "frames": 60, "frame": 20 },
+		{ "type": "key", "keycode": 49, "pressed": true, "frame": 80 },
+		{ "type": "key", "keycode": 49, "pressed": false, "frame": 85 }
+	]
+}

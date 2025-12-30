@@ -1,15 +1,25 @@
-class_name TestEntitySpawner
+@icon("res://addons/cts_core/assets/node_2D/icon_character.png")
+class_name ProvingGroundsEntityFactory
 extends Node
 
-## TestEntitySpawner
+## ProvingGroundsEntityFactory
 ##
 ## Responsible for creating and configuring entities for the Proving Grounds.
-## Supports procgen with random affixes loaded from data.
+## Supports STATIC (fixed), PROCGEN (random), and MIXED modes.
 
 # ------------------------------------------------------------------------------
 # Signals
 # ------------------------------------------------------------------------------
 signal entity_created(entity: Node)
+
+# ------------------------------------------------------------------------------
+# Enums
+# ------------------------------------------------------------------------------
+enum SpawnMode {
+	STATIC,     # Always same sprite/name (good for regression tests)
+	PROCGEN,    # Random sprites/affixes (good for stress tests)
+	MIXED       # Base static, random stats
+}
 
 # ------------------------------------------------------------------------------
 # Constants
@@ -24,7 +34,13 @@ const SURVIVOR_SPRITES = [
 # ------------------------------------------------------------------------------
 # Export Variables
 # ------------------------------------------------------------------------------
+@export_group("Configuration")
+@export var spawn_mode: SpawnMode = SpawnMode.PROCGEN
 @export var base_entity_scene: PackedScene
+
+@export_group("Static Overrides")
+@export var static_name: String = "TestDummy"
+@export var static_sprite: Texture2D
 
 # ------------------------------------------------------------------------------
 # Internal State
@@ -40,101 +56,102 @@ func _ready() -> void:
 # ------------------------------------------------------------------------------
 # Public Methods
 # ------------------------------------------------------------------------------
-func create_entity(type: String = "base_entity") -> Node:
-	print("[TestEntitySpawner] Creating entity of type: ", type)
+## Calculates the ideal spawn position based on a marker node
+func get_spawn_position(marker: Node2D) -> Vector2:
+	if not marker:
+		return Vector2.ZERO
+		
+	# Start at marker's position
+	var pos = marker.global_position
+	
+	# Add slight random offset to prevent perfect stacking (z-fighting/visual clutter)
+	# In the future, this could check for valid navmesh positions or slot availability
+	var offset = Vector2(randf_range(-16, 16), randf_range(-16, 16))
+	
+	return pos + offset
+
+func create_entity(_type: String = "base_entity") -> Node:
+	print("[EntityFactory] Creating entity. Mode: ", SpawnMode.keys()[spawn_mode])
 	var instance: Node
 	
 	if base_entity_scene:
-		print("[TestEntitySpawner] Instantiating base scene...")
 		instance = base_entity_scene.instantiate()
 	else:
-		push_warning("[TestEntitySpawner] Base entity scene not assigned! Using basic Node2D.")
+		push_warning("[EntityFactory] Base entity scene not assigned! Using basic Node2D.")
 		instance = Node2D.new()
 	
-	# Set basic name
-	instance.name = type.capitalize() + "_" + str(randi())
-	print("[TestEntitySpawner] Base instance created: ", instance.name)
-	
-	# Setup Visuals (Survivor Sprite)
-	_setup_visuals(instance)
-	
-	# Apply Affixes
-	_apply_random_affixes(instance)
+	# Configure based on mode
+	match spawn_mode:
+		SpawnMode.STATIC:
+			_configure_static(instance)
+		SpawnMode.PROCGEN:
+			_configure_procgen(instance)
+		SpawnMode.MIXED:
+			_configure_static(instance)
+			_apply_random_affixes(instance)
 	
 	entity_created.emit(instance)
-	print("[TestEntitySpawner] Entity creation complete.")
 	return instance
 
 # ------------------------------------------------------------------------------
-# Private Methods
+# Configuration Methods
+# ------------------------------------------------------------------------------
+func _configure_static(instance: Node) -> void:
+	instance.name = static_name + "_" + str(randi() % 1000) # Keep slightly unique for Godot
+	
+	var sprite = instance.get_node_or_null("Visuals/Sprite2D")
+	if sprite and static_sprite:
+		sprite.texture = static_sprite
+		
+	var label = instance.get_node_or_null("Visuals/AffixLabel")
+	if label:
+		label.text = "Static"
+
+func _configure_procgen(instance: Node) -> void:
+	instance.name = "Survivor_" + str(randi())
+	
+	# Random Sprite
+	var sprite = instance.get_node_or_null("Visuals/Sprite2D")
+	if sprite:
+		var texture_path = SURVIVOR_SPRITES.pick_random()
+		if ResourceLoader.exists(texture_path):
+			sprite.texture = load(texture_path)
+	
+	# Random Affixes
+	_apply_random_affixes(instance)
+
+	# Attach demo SkillsContainer using local test_skills.tres if not present
+	var skills_comp := instance.get_node_or_null("SkillsContainer")
+	if skills_comp == null:
+		skills_comp = preload("res://addons/cts_skills/Containers/skills_container.gd").new()
+		skills_comp.name = "SkillsContainer"
+		instance.add_child(skills_comp)
+	# Assign demo skill block resource
+	if ResourceLoader.exists("res://scenes/proving_grounds/resources/test_skills.tres"):
+		skills_comp.skills_block = load("res://scenes/proving_grounds/resources/test_skills.tres")
+	else:
+		push_warning("Test skills resource not found; skipping skills_block assignment.")
+
+func _apply_random_affixes(instance: Node) -> void:
+	var label = instance.get_node_or_null("Visuals/AffixLabel")
+	if label and not _affixes.is_empty():
+		var affix = _affixes.pick_random()
+		label.text = affix.get("name", "Unknown")
+		# In future: Apply actual stats here
+
+# ------------------------------------------------------------------------------
+# Data Loading
 # ------------------------------------------------------------------------------
 func _load_affixes() -> void:
-	print("[TestEntitySpawner] Loading affixes from: ", AFFIX_DATA_PATH)
 	if not FileAccess.file_exists(AFFIX_DATA_PATH):
-		push_error("[TestEntitySpawner] Affix data file not found: " + AFFIX_DATA_PATH)
+		push_warning("[EntityFactory] Affix data file not found.")
 		return
 		
 	var file = FileAccess.open(AFFIX_DATA_PATH, FileAccess.READ)
-	var content = file.get_as_text()
 	var json = JSON.new()
-	var error = json.parse(content)
+	var error = json.parse(file.get_as_text())
 	
 	if error == OK:
 		var data = json.data
 		if data.has("affixes"):
 			_affixes = data["affixes"]
-			print("[TestEntitySpawner] Loaded ", _affixes.size(), " affixes.")
-		else:
-			push_error("[TestEntitySpawner] Affix data missing 'affixes' key.")
-	else:
-		push_error("[TestEntitySpawner] Failed to parse affix data: " + json.get_error_message())
-
-func _setup_visuals(entity: Node) -> void:
-	print("[TestEntitySpawner] Setting up visuals for: ", entity.name)
-	# Hide existing ColorRect if present (default in BaseEntity)
-	var color_rect = entity.get_node_or_null("ColorRect")
-	if color_rect:
-		print("[TestEntitySpawner] Hiding default ColorRect.")
-		color_rect.visible = false
-		
-	# Add Survivor Sprite
-	var sprite_path = SURVIVOR_SPRITES.pick_random()
-	print("[TestEntitySpawner] Loading sprite from: ", sprite_path)
-	var sprite = Sprite2D.new()
-	var tex = load(sprite_path)
-	if tex:
-		sprite.texture = tex
-		print("[TestEntitySpawner] Sprite texture loaded successfully.")
-	else:
-		push_error("[TestEntitySpawner] Failed to load sprite texture!")
-		
-	sprite.name = "VisualSprite"
-	sprite.scale = Vector2(4, 4) # Scale up for visibility
-	entity.add_child(sprite)
-
-func _apply_random_affixes(entity: Node) -> void:
-	if _affixes.is_empty():
-		print("[TestEntitySpawner] No affixes available to apply.")
-		return
-		
-	var affix = _affixes.pick_random()
-	var affix_name = affix["name"]
-	print("[TestEntitySpawner] Applying affix: ", affix_name)
-	
-	# Update Entity Name
-	entity.name = affix_name + " " + entity.name
-	
-	# Add Visual Label for Affix
-	var label = Label.new()
-	label.text = affix_name
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.position = Vector2(-50, -60) # Position above sprite
-	label.custom_minimum_size = Vector2(100, 0)
-	label.add_theme_color_override("font_color", Color.YELLOW)
-	label.add_theme_font_size_override("font_size", 14)
-	label.name = "AffixLabel"
-	
-	entity.add_child(label)
-	
-	# Store affix data on entity metadata for future logic
-	entity.set_meta("affix", affix)

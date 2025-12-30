@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CtsItemDefinition" load_steps=3 format=3 uid="uid://bxbyvk0oofpsa"]
+
+[ext_resource type="Script" uid="uid://blr28mlb6xh1g" path="res://addons/cts_items/Data/ingredient.gd" id="1_6ouji"]
+[ext_resource type="Script" uid="uid://nndxytg63pnv" path="res://addons/cts_items/Data/item_definition.gd" id="2_q48g3"]
+
+[resource]
+script = ExtResource("2_q48g3")
+item_id = &"wooden_sword"
+display_name = "Wooden Sword"
+description = "A basic sword made from wood"
+item_type = 1
+slot = 8
+weight = 3.0
+value = 25

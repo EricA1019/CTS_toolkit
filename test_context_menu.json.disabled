@@ -1,0 +1,10 @@
+{
+	"version": "1.0",
+	"events": [
+		{ "type": "key", "keycode": 69, "pressed": true, "frame": 30, "comment": "Press E to open menu" },
+		{ "type": "key", "keycode": 69, "pressed": false, "frame": 35 },
+		{ "type": "wait", "frames": 30, "frame": 40, "comment": "Wait for menu to show" },
+		{ "type": "key", "keycode": 49, "pressed": true, "frame": 80, "comment": "Press 1 to trigger first option" },
+		{ "type": "key", "keycode": 49, "pressed": false, "frame": 85 }
+	]
+}

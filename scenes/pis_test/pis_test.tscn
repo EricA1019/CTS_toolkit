@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpk7j3x8vwqbn"]
+
+[ext_resource type="Script" path="res://scenes/pis_test/pis_test.gd" id="1_script"]
+
+[node name="PISTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "PIS Input Test Scene"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Button 1 (Press A)"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Button 2 (Press B)"
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Button 3 (Press C)"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MouseTest" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Click Me With Mouse"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ResultsLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Results: Waiting..."
+horizontal_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Instructions" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Instructions:
+1. Run scene
+2. PIS will auto-test inputs
+3. Watch for button activations"
+horizontal_alignment = 1

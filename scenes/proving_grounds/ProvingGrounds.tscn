@@ -1,25 +1,44 @@
-[gd_scene load_steps=6 format=3 uid="uid://ct5jg6taqyqkd"]
+[gd_scene load_steps=8 format=3 uid="uid://ct5jg6taqyqkd"]
 
 [ext_resource type="Script" uid="uid://d1sqy180044l0" path="res://scenes/proving_grounds/scripts/proving_grounds.gd" id="1_sc632"]
 [ext_resource type="Script" uid="uid://c7j87mfmk73ji" path="res://scenes/proving_grounds/scripts/test_entity_spawner.gd" id="2_8byd5"]
 [ext_resource type="PackedScene" uid="uid://b2errpxsd3ark" path="res://scenes/proving_grounds/UnifiedUI.tscn" id="3_an77a"]
 [ext_resource type="PackedScene" uid="uid://vjjgbd1rti0m" path="res://addons/cts_entity/Prefabs/base_entity.tscn" id="3_ltfpr"]
-[ext_resource type="Script" uid="uid://bah1w55hl533k" path="res://scenes/proving_grounds/scripts/unified_ui.gd" id="4_ltfpr"]
+[ext_resource type="PackedScene" uid="uid://buepiyoowlo0h" path="res://scenes/bunker/scene/bunker_pieces.tscn" id="5_ltfpr"]
+[ext_resource type="Script" uid="uid://dcsusn8nfn53l" path="res://addons/cts_entity/Nodes/spawn_point.gd" id="6_fhoq4"]
+[ext_resource type="Script" uid="uid://dos1ttjguhte0" path="res://addons/cts_entity/Input/entity_input_controller.gd" id="7_inputctl"]
 
-[node name="ProvingGrounds" type="Node2D"]
+[node name="ProvingGrounds" type="Node2D" node_paths=PackedStringArray("spawn_markers")]
 script = ExtResource("1_sc632")
+spawn_markers = [NodePath("TestSpawnPoint")]
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="EntityInputController" type="Node" parent="."]
+script = ExtResource("7_inputctl")
 
 [node name="EntityFactory" type="Node" parent="."]
 script = ExtResource("2_8byd5")
 base_entity_scene = ExtResource("3_ltfpr")
 
-[node name="UnifiedUI" type="CanvasLayer" parent="." instance=ExtResource("3_an77a")]
-script = ExtResource("4_ltfpr")
-status_label = NodePath("Control/VBoxContainer/StatusLabel")
-log_container = NodePath("Control/VBoxContainer/LogContainer")
-spawn_button = NodePath("Control/VBoxContainer/Buttons/SpawnButton")
-clear_button = NodePath("Control/VBoxContainer/Buttons/ClearButton")
+[node name="UnifiedUI" parent="." instance=ExtResource("3_an77a")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(577, 324)
+
+[node name="Set" type="Node" parent="."]
+
+[node name="BunkerPieces" parent="Set" instance=ExtResource("5_ltfpr")]
+position = Vector2(576, 323)
+
+[node name="BunkerPieces2" parent="Set" instance=ExtResource("5_ltfpr")]
+position = Vector2(704, 323)
+
+[node name="BunkerPieces3" parent="Set" instance=ExtResource("5_ltfpr")]
+position = Vector2(512, 323)
+
+[node name="BunkerPieces4" parent="Set" instance=ExtResource("5_ltfpr")]
+position = Vector2(640, 323)
+
+[node name="TestSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(602, 341)
+script = ExtResource("6_fhoq4")
+category = 2

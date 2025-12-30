@@ -101,6 +101,64 @@ func _on_entity_cleanup_started(entity_id: String):
 
 ---
 
+### entity_selected
+**When**: When an entity is selected by the player (mouse click, UI pick, or other selection mechanic)
+**Payload**:
+- `entity_id: String` - Unique instance identifier
+- `entity_node: Node` - The instance of the selected entity
+
+**Emitters**: `EntityBase._gui_input()` (or other selection handlers)
+**Listeners**: UI systems (PlayerBook), selection managers, debug gizmos
+
+**Example**:
+```gdscript
+func _on_entity_selected(entity_id: String, entity_node: Node):
+    # Open player book and show entity stats
+    PlayerBook.setup(EntitySignalRegistry, entity_node)
+```
+
+---
+
+### entity_deselected
+**When**: When an entity selection is cleared (click elsewhere, second click to deselect)
+**Payload**:
+- `entity_id: String`
+
+**Emitters**: `EntityBase._gui_input()` or selection manager when deselection occurs
+**Listeners**: UI systems (PlayerBook) to hide or clear displays
+
+**Example**:
+```gdscript
+func _on_entity_deselected(entity_id: String):
+    PlayerBook.hide()
+```
+
+---
+
+### entity_action_requested
+**When**: When a context menu action is triggered on an entity (right-click menu)
+**Payload**:
+- `entity_id: String` - Unique instance identifier
+- `action_type: String` - Type of action requested ("look_skills", "look_inventory", etc.)
+- `entity_node: Node` - The entity instance
+
+**Emitters**: `EntityBase._setup_context_menu()` via context menu callbacks
+**Listeners**: Scene managers (ProvingGrounds) to open appropriate UI (PlayerBook with specific page)
+
+**Example**:
+```gdscript
+func _on_entity_action_requested(entity_id: String, action_type: String, entity_node: Node):
+    match action_type:
+        "look_skills":
+            PlayerBook.setup(EntitySignalRegistry, entity_node)
+            PlayerBook.show()
+            PlayerBook.show_page("Skills")
+        "look_inventory":
+            PlayerBook.show_page("Inventory")
+```
+
+---
+
 ## EntityFactory Signals
 
 ### entity_spawned
