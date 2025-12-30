@@ -7,13 +7,12 @@ func setup(event_bus: Node, data_provider: Node) -> void:
 	super.setup(event_bus, data_provider)
 	name = "Inventory"
 	
-	# Connect to ItemsSignalRegistry for updates
-	var items_registry = Engine.get_singleton("ItemsSignalRegistry")
-	if items_registry:
-		if not items_registry.item_added.is_connected(_on_item_added):
-			items_registry.item_added.connect(_on_item_added)
-		if not items_registry.item_removed.is_connected(_on_item_removed):
-			items_registry.item_removed.connect(_on_item_removed)
+	# Connect to ItemsSignalRegistry for updates (autoload, not singleton)
+	if ItemsSignalRegistry:
+		if not ItemsSignalRegistry.item_added.is_connected(_on_item_added):
+			ItemsSignalRegistry.item_added.connect(_on_item_added)
+		if not ItemsSignalRegistry.item_removed.is_connected(_on_item_removed):
+			ItemsSignalRegistry.item_removed.connect(_on_item_removed)
 
 func refresh() -> void:
 	if not _data_provider or not _data_provider.has_method("get_page_data"):

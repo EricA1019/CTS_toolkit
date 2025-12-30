@@ -49,9 +49,10 @@ func _build_ui(data: Dictionary) -> void:
 func _on_skill_level_changed(entity_id: String, skill_name: String, level: int, _xp: int) -> void:
 	if not is_for_this_entity(entity_id):
 		return
-		
-	if skill_name in config.stats_to_show:
-		_update_label(skill_name, level)
+
+	var display_name := skill_name.capitalize().replace("_", " ")
+	if display_name in config.stats_to_show:
+		_update_label(display_name, level)
 
 func _update_label(stat_name: String, value: int) -> void:
 	var label = container.get_node_or_null(stat_name)

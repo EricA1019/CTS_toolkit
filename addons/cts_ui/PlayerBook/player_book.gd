@@ -20,15 +20,32 @@ func setup(event_bus: Node, data_provider: Node) -> void:
 			child.setup(event_bus, data_provider)
 
 func toggle() -> void:
-	visible = not visible
 	if visible:
-		book_opened.emit()
-		# Focus the current tab
-		var current = get_current_tab_control()
-		if current:
-			current.grab_focus()
+		close_book()
 	else:
-		book_closed.emit()
+		open_book()
+
+func open_book() -> void:
+	if visible:
+		return
+	visible = true
+	book_opened.emit()
+	# Focus the current tab
+	var current = get_current_tab_control()
+	if current:
+		current.grab_focus()
+
+func close_book() -> void:
+	if not visible:
+		return
+	visible = false
+	book_closed.emit()
+
+func show() -> void:
+	open_book()
+
+func hide() -> void:
+	close_book()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_player_book"):

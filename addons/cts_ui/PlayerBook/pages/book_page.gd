@@ -28,4 +28,3 @@ func refresh() -> void:
 ## Helper to check if a signal is for this entity
 func is_for_this_entity(entity_id: String) -> bool:
 	return not _entity_id.is_empty() and entity_id == _entity_id
-

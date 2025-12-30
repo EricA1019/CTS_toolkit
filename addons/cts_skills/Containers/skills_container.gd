@@ -178,6 +178,16 @@ func _emit_skill_leveled_up(skill_type: int, old_level: int, new_level: int) -> 
     if registry:
         registry.emit_signal("skill_leveled_up", _get_entity_id(), skill_type, old_level, new_level)
 
+    # Notify entity registry for UI consumers like PlayerBook
+    if Engine.has_singleton("EntitySignalRegistry"):
+        var entity_bus: Node = Engine.get_singleton("EntitySignalRegistry")
+        if entity_bus.has_signal("skill_level_changed"):
+            var keys: Array = SkillEnums.SkillType.keys()
+            var skill_name: String = str(skill_type)
+            if skill_type < keys.size():
+                skill_name = str(keys[skill_type])
+            entity_bus.emit_signal("skill_level_changed", _get_entity_id(), skill_name, new_level, 0)
+
 func _emit_modifier_applied(modifier: SkillModifier) -> void:
     var registry: Node = Engine.get_singleton("CTS_Skills") as Node
     if registry:

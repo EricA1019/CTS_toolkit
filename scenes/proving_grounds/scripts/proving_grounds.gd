@@ -190,7 +190,7 @@ func _on_entity_selected(_entity_id: String, entity_node: Node) -> void:
 	_current_selected_entity = entity_node
 	# Show player book
 	if ui:
-		var pb = ui.get_node_or_null("PlayerBook") as Node
+		var pb = ui.get_node_or_null("Control/PlayerBook") as Node
 		if pb and pb.has_method("setup"):
 			pb.setup(EntitySignalRegistry, entity_node)
 			if pb.has_method("show"):
@@ -202,7 +202,7 @@ func _on_entity_deselected(entity_id: String) -> void:
 			_current_selected_entity.deselect()
 			_current_selected_entity = null
 	if ui:
-		var pb = ui.get_node_or_null("PlayerBook") as Node
+		var pb = ui.get_node_or_null("Control/PlayerBook") as Node
 		if pb and pb.has_method("hide"):
 			pb.hide()
 

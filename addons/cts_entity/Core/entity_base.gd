@@ -1,6 +1,8 @@
 extends Node2D
 class_name EntityBase
 
+const SkillEnums = preload("res://addons/cts_skills/Data/skill_enums.gd")
+
 ## Base entity container - lifecycle management and component orchestration
 ## Entities are pure containers. All gameplay logic (stats, movement, abilities)
 ## lives in separate plugins that attach to entity containers.
@@ -92,15 +94,14 @@ func get_page_data(page_type: StringName) -> Dictionary:
 	
 	match page_type:
 		&"skills":
-			if skills_container:
-				# SkillsContainer structure: children are skill nodes
-				for child in skills_container.get_children():
-					if child.has_method("get_level"):
-						data[child.name] = {
-							"level": child.get_level(),
-							"xp": child.get_xp(),
-							"max_xp": child.get_max_xp()
-						}
+			if skills_container and skills_container.has_method("get_stat"):
+				# Provide readable skill names using SkillEnums mapping so UI configs match
+				for skill_name in SkillEnums.SkillType.keys():
+					var display: String = skill_name.capitalize().replace("_", " ")
+					var level: int = int(skills_container.get_stat(display))
+					data[display] = {
+						"level": level
+					}
 		
 		&"inventory":
 			if inventory_container and inventory_container.has_method("get_items"):
@@ -118,12 +119,17 @@ func get_page_data(page_type: StringName) -> Dictionary:
 				for child in stats_container.get_children():
 					if child.has_method("get_value"):
 						data[child.name] = child.get_value()
+			else:
+				data["_missing"] = true
 						
 		&"affixes":
 			if affix_container and affix_container.has_method("get_affixes"):
 				data["affixes"] = affix_container.get_affixes()
 				
 	return data
+
+func get_stats_container() -> Node:
+	return stats_container
 
 # =============================================================================
 # LIFECYCLE
