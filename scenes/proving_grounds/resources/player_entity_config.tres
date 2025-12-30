@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EntityConfig" load_steps=5 format=3 uid="uid://player_entity_config"]
+
+[ext_resource type="Script" path="res://addons/cts_entity/Data/entity_config.gd" id="1_config"]
+[ext_resource type="Resource" uid="uid://test_skills" path="res://scenes/proving_grounds/resources/test_skills.tres" id="2_skills"]
+[ext_resource type="Resource" uid="uid://test_inventory_block" path="res://addons/cts_items/Data/test_items/test_inventory_block.tres" id="3_inventory"]
+
+[resource]
+script = ExtResource("1_config")
+entity_id = "player"
+groups = Array[String](["player"])
+entity_name = "Player"
+is_unique = true
+skills_block = ExtResource("2_skills")
+inventory_block = ExtResource("3_inventory")
+custom_data = {}

@@ -79,6 +79,53 @@ func _get_optional_child(path: String) -> Node:
 	return node
 
 # =============================================================================
+# DATA PROVIDER API
+# =============================================================================
+
+## Returns formatted data for a specific UI page type
+## Used by PlayerBook and other UI components for initial data load
+##
+## @param page_type: The type of page requesting data (&"skills", &"inventory", etc.)
+## @return: Dictionary containing the page data
+func get_page_data(page_type: StringName) -> Dictionary:
+	var data: Dictionary = {}
+	
+	match page_type:
+		&"skills":
+			if skills_container:
+				# SkillsContainer structure: children are skill nodes
+				for child in skills_container.get_children():
+					if child.has_method("get_level"):
+						data[child.name] = {
+							"level": child.get_level(),
+							"xp": child.get_xp(),
+							"max_xp": child.get_max_xp()
+						}
+		
+		&"inventory":
+			if inventory_container and inventory_container.has_method("get_items"):
+				# InventoryContainer returns Array[ItemInstance]
+				data["items"] = inventory_container.get_items()
+				data["capacity"] = inventory_container.slots.size()
+		
+		&"equipment":
+			if equipment_container and equipment_container.has_method("get_slots"):
+				data["slots"] = equipment_container.get_slots()
+		
+		&"stats":
+			if stats_container:
+				# StatsContainer usually has children for each stat
+				for child in stats_container.get_children():
+					if child.has_method("get_value"):
+						data[child.name] = child.get_value()
+						
+		&"affixes":
+			if affix_container and affix_container.has_method("get_affixes"):
+				data["affixes"] = affix_container.get_affixes()
+				
+	return data
+
+# =============================================================================
 # LIFECYCLE
 # =============================================================================
 

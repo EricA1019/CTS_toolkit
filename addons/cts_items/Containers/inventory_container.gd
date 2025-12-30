@@ -43,3 +43,12 @@ func _resolve_entity_id() -> String:
 	if parent and parent.has_method("get_entity_id"):
 		return "%s_inventory" % parent.get_entity_id()
 	return name
+
+## Returns all items in the inventory as an array (skips empty slots)
+## Used by UI components for data binding
+func get_items() -> Array:
+	var items: Array = []
+	for slot in slots:
+		if slot:
+			items.append(slot)
+	return items

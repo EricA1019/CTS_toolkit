@@ -44,6 +44,13 @@ signal entity_deselected(entity_id: String)
 signal entity_action_requested(entity_id: String, action_type: String, entity_node: Node)
 
 # =============================================================================
+# SKILL SIGNALS
+# =============================================================================
+
+## Emitted when a skill level or XP changes
+signal skill_level_changed(entity_id: String, skill_name: String, level: int, xp: int)
+
+# =============================================================================
 # ENTITY FACTORY SIGNALS (Creation)
 # =============================================================================
 

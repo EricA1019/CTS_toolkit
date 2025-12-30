@@ -3,35 +3,30 @@ extends BookPage
 
 @export var config: StatPageConfig
 
-var _stats_component: Node
-
 @onready var container: VBoxContainer = $ScrollContainer/VBoxContainer
 
 func setup(event_bus: Node, data_provider: Node) -> void:
-	print("[SkillsPage] setup() called with provider: ", data_provider.name if data_provider else "null")
+	super.setup(event_bus, data_provider)
+	
 	if not config:
 		push_warning("SkillsPage: No config provided.")
 		return
 	
-	print("[SkillsPage] Config title:", config.title, " component_name:", config.component_name)
 	name = config.title
 	
-	# Try to find the component
-	if data_provider.has_node(config.component_name):
-		_stats_component = data_provider.get_node(config.component_name)
-		print("[SkillsPage] Found component: ", _stats_component.name)
-	else:
-		push_warning("SkillsPage: Could not find component %s on provider. Provider children: %s" % [config.component_name, data_provider.get_children()])
+	# Connect signals
+	if event_bus.has_signal("skill_level_changed"):
+		if not event_bus.skill_level_changed.is_connected(_on_skill_level_changed):
+			event_bus.skill_level_changed.connect(_on_skill_level_changed)
+
+func refresh() -> void:
+	if not _data_provider or not _data_provider.has_method("get_page_data"):
 		return
 		
-	# Connect signals
-	if event_bus.has_signal("stat_changed"):
-		event_bus.stat_changed.connect(_on_stat_changed)
-	
-	print("[SkillsPage] Building UI for stats:", config.stats_to_show)
-	_build_ui()
+	var data = _data_provider.get_page_data(&"skills")
+	_build_ui(data)
 
-func _build_ui() -> void:
+func _build_ui(data: Dictionary) -> void:
 	# Clear existing
 	for child in container.get_children():
 		child.queue_free()
@@ -39,19 +34,26 @@ func _build_ui() -> void:
 	for stat_name in config.stats_to_show:
 		var label = Label.new()
 		label.name = stat_name
-		label.text = "%s: ..." % stat_name
-		container.add_child(label)
 		
-		# Initial update if possible
-		if _stats_component and _stats_component.has_method("get_stat"):
-			var val = _stats_component.get_stat(stat_name)
-			_update_label(stat_name, val)
+		var val_str = "0"
+		if data.has(stat_name):
+			var skill_data = data[stat_name]
+			if skill_data is Dictionary:
+				val_str = str(skill_data.get("level", 0))
+			else:
+				val_str = str(skill_data)
+				
+		label.text = "%s: %s" % [stat_name, val_str]
+		container.add_child(label)
 
-func _on_stat_changed(stat_name: String, new_value: float) -> void:
-	if stat_name in config.stats_to_show:
-		_update_label(stat_name, new_value)
+func _on_skill_level_changed(entity_id: String, skill_name: String, level: int, _xp: int) -> void:
+	if not is_for_this_entity(entity_id):
+		return
+		
+	if skill_name in config.stats_to_show:
+		_update_label(skill_name, level)
 
-func _update_label(stat_name: String, value: float) -> void:
+func _update_label(stat_name: String, value: int) -> void:
 	var label = container.get_node_or_null(stat_name)
 	if label:
 		label.text = "%s: %s" % [stat_name, str(value)]

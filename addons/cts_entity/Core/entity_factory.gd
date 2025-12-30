@@ -86,6 +86,10 @@ func create_entity(config: EntityConfig, parent: Node = null) -> EntityBase:
 	if config.visual_data:
 		config.visual_data.apply_to_entity(entity)
 	
+	# Assign to groups
+	for group in config.groups:
+		entity.add_to_group(group)
+	
 	# Add to scene tree
 	if parent:
 		parent.add_child(entity)

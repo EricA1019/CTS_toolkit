@@ -17,7 +17,8 @@ class_name EntityConfig
 ## Base identifier for this entity type (e.g., "bandit", "detective")
 ## Will be used as-is if is_unique=true, or as prefix for auto-increment
 @export var entity_id: String = ""
-
+## Groups to assign this entity to upon spawning (e.g., ["player", "enemy"])
+@export var groups: Array[String] = []
 ## Display name for UI
 @export var entity_name: String = ""
 

@@ -125,10 +125,17 @@ func spawn_test_entity() -> void:
 		print("[ProvingGrounds] No markers, using random pos: ", spawn_pos)
 		
 	# Create a test config
-	var config = EntityConfig.new()
-	config.entity_id = "survivor"
-	config.entity_name = "Test Survivor"
-	config.is_unique = false
+	# Use the player config resource if available, otherwise fallback
+	var config: EntityConfig
+	if ResourceLoader.exists("res://scenes/proving_grounds/resources/player_entity_config.tres"):
+		config = load("res://scenes/proving_grounds/resources/player_entity_config.tres")
+		print("[ProvingGrounds] Loaded player config resource")
+	else:
+		config = EntityConfig.new()
+		config.entity_id = "survivor"
+		config.entity_name = "Test Survivor"
+		config.is_unique = false
+		config.groups = ["player"] # Ensure it's in player group for testing
 	
 	# Request spawn via registry
 	print("[ProvingGrounds] Emitting spawn_requested with pos: ", spawn_pos)
@@ -201,6 +208,12 @@ func _on_entity_deselected(entity_id: String) -> void:
 
 func _on_entity_action_requested(_entity_id: String, action_type: String, entity_node: Node) -> void:
 	print("[ProvingGrounds] Entity action requested: ", action_type, " for entity: ", _entity_id)
+	
+	# Only show PlayerBook for entities in the "player" group
+	if not entity_node.is_in_group("player"):
+		print("[ProvingGrounds] Entity is not in 'player' group. Ignoring PlayerBook request.")
+		return
+		
 	_current_selected_entity = entity_node
 	
 	if ui:
@@ -213,17 +226,22 @@ func _on_entity_action_requested(_entity_id: String, action_type: String, entity
 			# Switch to appropriate tab based on action
 			match action_type:
 				"look_skills":
-					# Find Skills tab index
-					for i in range(pb.get_tab_count()):
-						if pb.get_tab_title(i) == "Skills":
-							pb.current_tab = i
-							break
+					pb.current_tab = 0 # Skills is usually first
 				"look_inventory":
-					# Find Inventory tab index
-					for i in range(pb.get_tab_count()):
-						if pb.get_tab_title(i) == "Inventory":
-							pb.current_tab = i
-							break
+					pb.current_tab = 1 # Inventory is usually second
+				"toggle_player_book":
+					if pb.visible:
+						pb.hide()
+					else:
+						pb.show()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"): # ESC key
+		if ui:
+			var pb := ui.get_node_or_null("Control/PlayerBook")
+			if pb and pb.visible:
+				pb.hide()
+				get_viewport().set_input_as_handled()
 
 # ----------------------------------------------------------------------------
 # Auto-select helper for tests
